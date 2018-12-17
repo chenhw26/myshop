@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Online Shop</title>
+</head>
+<body>
+    <form action="/shop/computers/" method="post">
+        {% csrf_token %}
+        搜索：<input type="text" name="computers"> <br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <p>{{ computers }}</p>
+</body>
+</html>

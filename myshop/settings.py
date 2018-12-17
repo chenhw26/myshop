@@ -129,3 +129,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     'static',
 ]
+
+APPEND_SLASH = False

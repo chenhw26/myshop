@@ -23,7 +23,7 @@ class Shop(models.Model):
 
 class Brand(models.Model):
 	name = models.CharField(max_length=15, primary_key=True)
-	country = models.CharField(choice=('China','Taiwan','Korean','Japan','US'))
+	country = models.CharField(max_length=15)
 	found_date = models.DateField(auto_now=False, auto_now_add=False)
 	net = models.CharField(max_length=50, null=True)
 
@@ -37,7 +37,7 @@ class User(models.Model):
 	user_id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=50)
 	password = models.CharField(max_length=20)
-	sex = models.CharField(choice=('Male', 'Female'))
+	sex = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')))
 	address = models.CharField(max_length=50)
 	balance = models.FloatField(validators=[MinValueValidator(0)])
 

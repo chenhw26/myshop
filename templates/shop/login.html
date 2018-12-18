@@ -1,18 +1,42 @@
 <!DOCTYPE html>
-<html>
+{% load static %}
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Online Shop</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'shop/index.css' %}">
 </head>
 <body>
-    <form action="/shop/login/" method="post">
-        {% csrf_token %}
-        <input type="text" name="user_id"> <br>
-		<input type="password" name="psw"> <br>
-        <input type="submit" value="Submit">
+<div class="wrapper">
+    <div class="header">Login to <span>iyaq</span></div>
+    <form action="" method="post">
+        <ul>
+            <li>
+                <div class="text">
+                    <span class="yonghu"> </span><input type="text" placeholder="请输入用户名">
+                </div>
+            </li>
+            <li>
+                <div class="password">
+                    <span class="mima"> </span><input type="password" placeholder="请输入密码">
+                </div>
+            </li>
+            <li class="remember">
+                <input type="checkbox">记住我
+            </li>
+            <li>
+                <a href="">忘记我</a>
+            </li>
+            <li>
+                <input type="button" value="登陆">
+            </li>
+        </ul>
     </form>
-
-    <p>{{ user_id }}</p>
-    <p>{{ psw }}</p>
+    <div class="footer">
+        <p>iyaq Personal Blog  <a href="">Copyright ©2012 Wang Yuyan</a></p>
+        <p><a href="">iiyaq Home</a> | <a href="">Bolg
+        </a> | <a href="">Work</a> | <a href="">Terms of Use</a> | <a href="">Contact Me</a></p>
+    </div>
+</div>
 </body>
 </html>

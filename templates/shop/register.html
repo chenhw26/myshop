@@ -9,7 +9,7 @@
 <body>
 <div class="wrapper">
     <div class="header">Login to <span>iyaq</span></div>
-    <form action="{% url 'shop:login' %}" method="post">
+    <form action="{% url 'shop:register' %}" method="post">
         {% csrf_token %}
         <ul>
             <li>
@@ -17,7 +17,7 @@
             </li>
             <li>
                 <div class="text">
-                    <span class="yonghu"> </span><input type="text" placeholder="请输入id" name="user_id">
+                    <span class="yonghu"> </span><input type="text" placeholder="请输入用户名" name="user_name">
                 </div>
             </li>
             <li>
@@ -26,16 +26,27 @@
                 </div>
             </li>
             <li>
-            <input type="radio" name="type" value="user" checked>   一般用户登录 <br>
-            <input type="radio" name="type" value="seller">   卖家登录
-            </li>
-            <li class="remember">
-                <input type="checkbox">记住我
+                <div class="password">
+                    <span class="mima"> </span><input type="password" placeholder="请再次输入密码" name="psw_confirm">
+                </div>
             </li>
             <li>
-                <input type="submit" value="登陆">
+                <div class="text">
+                    <span class="mima"> </span><input type="text" placeholder="请输入收货地址" name="address">
+                </div>
             </li>
-            <li><a href="{% url 'shop:register' %}">注册账号</a></li>
+            <li>
+            <input type="radio" name="sex" value="M" checked>   Male
+            <input type="radio" name="sex" value="F">   Female
+            </li>
+            <li>
+            <input type="radio" name="type" value="user" checked>   用户注册
+            <input type="radio" name="type" value="seller">   卖家注册
+            </li>
+            <li>
+                <input type="submit" value="注册">
+            </li>
+            <li><br><a href="{% url 'shop:login' %}">登录</a></li>
         </ul>
     </form>
     <div class="footer">

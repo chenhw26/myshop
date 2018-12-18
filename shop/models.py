@@ -30,16 +30,16 @@ class Brand(models.Model):
 class Seller(models.Model):
 	seller_id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=50)
-	password = models.CharField(max_length=20)
-	balance = models.FloatField(validators=[MinValueValidator(0)])
+	password = models.CharField(max_length=100)
+	balance = models.FloatField(validators=[MinValueValidator(0)], default=0)
 
 class User(models.Model):
 	user_id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=50)
-	password = models.CharField(max_length=20)
+	password = models.CharField(max_length=100)
 	sex = models.CharField(max_length=1, choices=(('M', 'Male'), ('F', 'Female')))
 	address = models.CharField(max_length=50)
-	balance = models.FloatField(validators=[MinValueValidator(0)])
+	balance = models.FloatField(validators=[MinValueValidator(0)], default=100000)
 
 # 优惠券表
 class Coupon(models.Model):

@@ -1,4 +1,4 @@
-from django.shortcuts import HttpResponseRedirect, reverse
+from django.shortcuts import *
 
 def index(request):
 	if 'ID' not in request.COOKIES.keys():
@@ -9,7 +9,7 @@ def index(request):
 		return HttpResponseRedirect(reverse('shop:sellerIndex'))
 
 def userIndex(request, user_id):
-	pass
+	return HttpResponse('You are in user index, id:' + str(user_id))
 
 def sellerIndex(request, seller_id):
-	pass
+	return HttpResponse('You are in seller index, id:' + str(seller_id))

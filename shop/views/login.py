@@ -32,6 +32,7 @@ def login(request):
 				rt['error_message'] = '密码错误'
 				return render(request, 'shop/login.html', rt)
 			
+			request.session['id'], request.session['type'] = user_id, 'user'
 			return HttpResponseRedirect(reverse('shop:userIndex', args=(user_id, )))
 
 		elif request.POST['type'] == 'seller':
@@ -51,6 +52,7 @@ def login(request):
 				rt['error_message'] = '密码错误'
 				return render(request, 'shop/login.html', rt)
 
+			request.session['id'], request.session['type'] = seller_id, 'seller'
 			return HttpResponseRedirect(reverse('shop:sellerIndex', args=(seller_id, )))
 
 def register(request):
@@ -76,8 +78,10 @@ def register(request):
 		if type_ == 'user':
 			new_user = User(name=user_name, password=md5Encode(str(psw)), sex=sex, address=address)
 			new_user.save()
+			request.session['id'], request.session['type'] = new_user.user_id, 'user'
 			return HttpResponseRedirect(reverse('shop:userIndex', args=(new_user.user_id,)))
 		elif type_ == 'seller':
 			new_seller = Seller(name=user_name, password=md5Encode(str(psw)))
 			new_seller.save()
+			request.session['id'], request.session['type'] = new_seller.seller_id, 'user'
 			return HttpResponseRedirect(reverse('shop:sellerIndex', args=(new_seller.seller_id, )))

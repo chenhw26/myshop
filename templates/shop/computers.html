@@ -5,12 +5,53 @@
 <title>Online Shop</title>
 </head>
 <body>
-    <form action="/shop/computers/" method="post">
+    <h5> 筛选条件 </h5>
+    <form action="{% url 'shop:computers' %}" method="post">
         {% csrf_token %}
-        搜索：<input type="text" name="computers"> <br>
-        <input type="submit" value="Submit">
+        型号: <input type="text" name="computer_id"> <br>
+        cpu: <input type="text" name="cpu"> <br>
+        显卡: <input type="text" name="graphics_card"> <br>
+        内存: <input type="number" name="minMemory" min="0"> &nbsp ~ &nbsp <input type="number" name="maxMemory" min="0">(GB)<br>
+        SSD: <input type="number" name="minssd" min="0"> &nbsp ~ &nbsp <input type="number" name="maxssd" min="0">(GB)<br>
+        磁盘: <input type="number" name="minDisk" min="0"> &nbsp ~ &nbsp <input type="number" name="maxDisk" min="0">(GB)<br>
+        品牌: <select name='brand'>
+              <option value=""></option>
+              {% for b in brand %}
+              <option value={{b.name}}>{{b.name}}</option>
+              {% endfor %}
+              </select> <br>
+        <input type="submit" value="筛选">
     </form>
 
-    <p>{{ computers }}</p>
+{% if not computer.exists %}
+<h4> 没有符合条件的电脑. </h4>
+{% else %}
+<table>
+    <tr>
+        <td>型号</td>
+        <td>cpu</td>
+        <td>显卡</td>
+        <td>内存(GB)</td>
+        <td>SSD(GB)</td>
+        <td>HD(GB)</td>
+        <td>屏幕尺寸(英寸)</td>
+        <td>品牌</td>
+    </tr>
+    {% for c in computer %}
+    <tr>
+        <td><a href="{% url 'shop:computerDetail'  c.computer_id %}">{{c.computer_id}}</a></td>
+        <td>{{c.cpu}}</td>
+        <td>{{c.graphics_card}}</td>
+        <td>{{c.memory}}</td>
+        <td>{{c.ssd_capacity}}</td>
+        <td>{{c.disk_capacity}}</td>
+        <td>{{c.screen_size}}</td>
+        <td><a href="{% url 'shop:brand' c.brand.name%}"> {{c.brand.name}} </a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<br><br>
+<a href="{% url 'shop:computers' %}">清空筛选条件</a>
 </body>
 </html>

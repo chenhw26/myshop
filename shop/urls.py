@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, login, shops, computers, trolley
+from .views import index, login, shops, computers, trolley, brand
 
 app_name = 'shop'  #声明namespace
 
@@ -16,8 +16,9 @@ urlpatterns = [
     path('shops/details/<int:shop_id>/', shops.details, name='shopDetail'),
     path('trolley/<int:user_id>/', trolley.trolley, name='trolley'),
     path('trolley/<int:user_id>/buy/', trolley.buy, name='trolley_buy'),
-    path('trolley/add/<int:trolley_id>', trolley.add, name='trolley_add'),
-    path('trolley/delete/<int:trolley_id>', trolley.delete, name='trolley_delete'),
+    path('trolley/add/<int:trolley_id>/', trolley.add, name='trolley_add'),
+    path('trolley/delete/<int:trolley_id>/', trolley.delete, name='trolley_delete'),
+    path('brand/<str:name>/', brand.brand, name='brand')
 ]
 
 # urlpatterns = [

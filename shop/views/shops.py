@@ -1,7 +1,7 @@
-
+from django.shortcuts import *
 
 def shops(request):
 	pass
 
 def details(request, shop_id):
-	pass
+	return HttpResponse(str(shop_id) + ' shop Detail')

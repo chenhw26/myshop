@@ -1,18 +1,31 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+class Brand(models.Model):
+	name = models.CharField(max_length=15, primary_key=True)
+	country = models.CharField(max_length=15)
+	found_date = models.DateField(auto_now=False, auto_now_add=False)
+	net = models.CharField(max_length=50, blank=True, null=True)
+
 class Computer(models.Model):
 	# 笔记本型号
 	computer_id = models.CharField(max_length=30, primary_key=True)
 	# cpu型号
 	cpu = models.CharField(max_length=15)
 	# 显卡型号
-	graphics_card = models.CharField(max_length=15, null=True)
+	graphics_card = models.CharField(max_length=15, blank=True, null=True)
 	# 以GB为单位
 	memory = models.IntegerField(validators=[MaxValueValidator(128), MinValueValidator(0)])
-	ssd_capacity = models.IntegerField(validators=[MinValueValidator(0)], null=True)
-	disk_capacity = models.IntegerField(validators=[MinValueValidator(0)], null=True)
+	ssd_capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
+	disk_capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
 	screen_size = models.CharField(max_length=10)
+	brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+
+class Seller(models.Model):
+	seller_id = models.AutoField(primary_key=True)
+	name = models.CharField(max_length=50)
+	password = models.CharField(max_length=100)
+	balance = models.FloatField(validators=[MinValueValidator(0)], default=0)
 
 class Shop(models.Model):
 	# 店铺id
@@ -20,18 +33,7 @@ class Shop(models.Model):
 	name = models.CharField(max_length=50)
 	address = models.CharField(max_length=50)
 	open_date = models.DateField(auto_now=False, auto_now_add=False)
-
-class Brand(models.Model):
-	name = models.CharField(max_length=15, primary_key=True)
-	country = models.CharField(max_length=15)
-	found_date = models.DateField(auto_now=False, auto_now_add=False)
-	net = models.CharField(max_length=50, null=True)
-
-class Seller(models.Model):
-	seller_id = models.AutoField(primary_key=True)
-	name = models.CharField(max_length=50)
-	password = models.CharField(max_length=100)
-	balance = models.FloatField(validators=[MinValueValidator(0)], default=0)
+	seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
 
 class User(models.Model):
 	user_id = models.AutoField(primary_key=True)
@@ -61,13 +63,6 @@ class Shop_comment(models.Model):
 	shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 	content = models.TextField()
-
-# 表示优惠券的适用店铺的表
-class Available(models.Model):
-	shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
-	coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
-	class Meta:
-		unique_together = ('shop_id', 'coupon_id')
 
 # 表示店铺销售电脑的表
 class Sell(models.Model):
@@ -111,24 +106,7 @@ class like(models.Model):
 	class Meta:
 		unique_together = ('user_id', 'brand_name')
 
-# 某个型号的电脑属于某个品牌
-class produce(models.Model):
-	computer_id = models.ForeignKey(Computer, on_delete=models.CASCADE)
-	brand_name = models.ForeignKey(Brand, on_delete=models.CASCADE)
-	class Meta:
-		unique_together = ('computer_id', 'brand_name')
-
-# 某个店铺属于某个卖家
-class belong(models.Model):
-	shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
-	seller_id = models.ForeignKey(Seller, on_delete=models.CASCADE)
-	class Meta:
-		unique_together = ('shop_id', 'seller_id')
-
 # 购物车
-class trolley(models.Model):
-	computer_id = models.ForeignKey(Computer, on_delete=models.CASCADE)
-	shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
+class shopping_cart(models.Model):
+	sell = models.ForeignKey(Sell, on_delete=models.CASCADE)
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-	class Meta:
-		unique_together = ('computer_id', 'shop_id', 'user_id')

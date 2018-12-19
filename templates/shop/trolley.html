@@ -1,0 +1,24 @@
+<html>
+<body>
+
+<h4>{{name}} 的购物车 </h4>
+<ul type="disc">
+	{% for t in trolley%}
+	<li>
+    <a href="{% url 'shop:computerDetail' t.sell.computer_id.computer_id %}"> {{t.sell.computer_id.computer_id}} </a>&nbsp &nbsp
+    <a href="{% url 'shop:shopDetail' t.sell.shop_id.shop_id %}"> {{t.sell.shop_id.name}} </a>&nbsp &nbsp
+		{{t.sell.price}}元
+		<a href="{% url 'shop:trolley_delete' t.id %}"> 删除 </a>
+	</li>
+	{%endfor%}
+	{% if coupon %}
+		<li> 优惠券共计减免{{couponTotal}}元. </li>
+	{% else %}
+		<li> 当前无可使用的优惠券. </li>
+	{% endif %}
+</ul>
+<h5> 总价 {{total}}元. </h5>
+<a href="{% url 'shop:trolley_buy' user_id %}"> 购买 <a>
+
+</body>
+</html>

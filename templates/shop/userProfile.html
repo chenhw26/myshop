@@ -1,0 +1,69 @@
+{% load static %}
+<html>
+
+<body>
+
+<h4> user id: {{user_id}},&nbsp user_name: {{user_name}},&nbsp 余额:{{balance}}</h4>
+<br>
+<h5> 购买记录 </h5>
+{% if buy %}
+  <ul>
+  {% for record in buy %}
+    <li>
+        <a href="{% url 'shop:computerDetail' record.computer_id.computer_id %}">{{record.computer_id.computer_id}} </a>&nbsp &nbsp
+        <a href="{% url 'shop:shopDetail' record.shop_id.shop_id %}">{{record.shop_id.name}} </a>&nbsp &nbsp
+        {{record.buy_time}} &nbsp {{record.price}}元</li>
+  {% endfor %}
+  </ul>
+  {% else %}
+    无购买记录
+{% endif %}
+<br>
+
+<h5> 当前购物车 </h5>
+{% if trolley %}
+  <ul>
+  {% for record in trolley %}
+    <li>
+    <a href="{% url 'shop:computerDetail' record.sell.computer_id.computer_id %}">{{record.sell.computer_id.computer_id}} </a>&nbsp &nbsp
+    <a href="{% url 'shop:shopDetail' record.sell.shop_id.shop_id %}">{{record.sell.shop_id.name}} </a>&nbsp &nbsp
+    </li>
+  {% endfor %}
+  </ul>
+  {% if curUser %}
+    <a href="{% url 'shop:trolley' user_id %}"> 去结算 </a>
+  {% endif %}
+  {% else %}
+    购物车为空
+{% endif %}
+<br>
+<h5> 代金券 </h5>
+{% if coupon %}
+  <ul>
+  {% for record in coupon %}
+    <li>{{record.coupon_id.value}}元代金券</li>
+  {% endfor %}
+  </ul>
+  {% else %}
+    无可用代金券
+{% endif %}
+<br>
+<h5> 我的收藏 </h5>
+{% if mark %}
+  <ul>
+  {% for record in mark %}
+    <li>
+      <a href="{% url 'shop:computerDetail' record.computer_id.computer_id %}">{{record.computer_id.computer_id}} </a>   &nbsp
+      {{record.mark_date}}
+    </li>
+  {% endfor %}
+  </ul>
+  {% else %}
+    无收藏
+{% endif %}
+<br><br>
+<a href="{% url 'shop:computers' %}"> 查看所有电脑 </a> <br><br>
+<a href="{% url 'shop:shops' %}"> 查看所有店铺 </a> <br><br>
+<a href="{% url 'shop:logout' %}">Logout</a>
+</body>
+</html>

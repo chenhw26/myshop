@@ -17,7 +17,7 @@ def login(request):
 	elif request.method == 'POST':
 		if request.POST['type'] == 'user':
 			try:
-				user_id = int(request.POST['user_id']) - 10000
+				user_id = int(request.POST['user_id'])
 				psw = request.POST['psw']
 			except ValueError:
 				rt['error_message'] = '账号不存在'
@@ -37,7 +37,7 @@ def login(request):
 
 		elif request.POST['type'] == 'seller':
 			try:
-				seller_id = int(request.POST['user_id']) - 10000
+				seller_id = int(request.POST['user_id'])
 				psw = request.POST['psw']
 			except ValueError:
 				rt['error_message'] = '账号不存在'
@@ -85,3 +85,7 @@ def register(request):
 			new_seller.save()
 			request.session['id'], request.session['type'] = new_seller.seller_id, 'user'
 			return HttpResponseRedirect(reverse('shop:sellerIndex', args=(new_seller.seller_id, )))
+
+def logout(request):
+	request.session['id'], request.session['type'] = None, None
+	return HttpResponseRedirect(reverse('shop:login'))

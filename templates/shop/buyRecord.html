@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Online Shop</title>
+</head>
+<h2> {{user.name}}的交易记录 </h2>
+<body>
+    <h5> 筛选条件 </h5>
+    <form action="{% url 'shop:buyRecord' user.user_id %}" method="post">
+        {% csrf_token %}
+        型号: <input type="text" name="computer_id"> <br>
+        品牌: <select name='brand'>
+              <option value=""></option>
+              {% for b in brand %}
+              <option value={{b.name}}>{{b.name}}</option>
+              {% endfor %}
+              </select> <br>
+        商家: <input type="text" name="shop"> <br>
+  		日期: <input type="date" name="minDate">&nbsp ~ &nbsp  <input type="date" name="maxDate"><br>
+				
+		价格: <input type="number" name="minPrice" min="0"> &nbsp ~ &nbsp <input type="number" name="maxPrice" min="0">(元) <br>
+        排序: <select name='sort'>
+              <option value=""></option>
+              <option value="computer_id__computer_id">型号</option>
+              <option value="computer_id__brand__name">品牌</option>
+              <option value="shop_id__name">商家</option>
+              <option value="buy_time">日期</option>
+              <option value="price">价格</option>
+              </select> &nbsp
+	    <input type="radio" name="sortType" value="" checked>升序
+	    <input type="radio" name="sortType" value="-">降序
+
+        <input type="submit" value="筛选">
+    </form>
+<br>
+{% if not records.exists %}
+<h4> 没有符合条件的交易记录 </h4>
+{% else %}
+<table>
+    <tr>
+        <td>型号</td>
+        <td>品牌</td>
+				<td>商家</td>
+				<td>日期</td>
+				<td>价格</td>
+    </tr>
+    {% for r in records %}
+    <tr>
+        <td><a href="{% url 'shop:computerDetail' r.computer_id.computer_id %}">{{r.computer_id.computer_id}}</a></td>
+        <td><a href="{% url 'shop:brand' r.computer_id.brand.name %}">{{r.computer_id.brand.name}}</a></td>
+        <td><a href="{% url 'shop:shopDetail' r.shop_id.shop_id %}">{{r.shop_id.name}}</a></td>
+        <td>{{r.buy_time}}</td>
+        <td>{{r.price}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<br><br>
+<a href="{% url 'shop:buyRecord' user.user_id %}">清空筛选条件</a>
+<br>
+<a href="{% url 'shop:index' %}">返回</a>
+</body>
+</html>

@@ -24,7 +24,7 @@ def userIndex(request, user_id):
 	rt['balance'] = curUser.balance
 
 	rt['coupon'] = Coupon.objects.filter(owner__user_id=user_id)
-	rt['buy'] = Buy.objects.filter(user_id__user_id=user_id)
+	rt['buy'] = Buy.objects.filter(user_id__user_id=user_id)[:5]
 	rt['mark'] = mark.objects.filter(user_id__user_id=user_id)
 	rt['trolley'] = shopping_cart.objects.filter(user_id__user_id=user_id)
 
@@ -71,6 +71,42 @@ def deleteCoupon(request, coupon_id):
 	Coupon(coupon_id=coupon_id).delete()
 	return HttpResponseRedirect(reverse('shop:index'))
 
-def sellerIndex(request, seller_id):
-	curUser = User.objects.get(user_id=seller_id)
-	return render(request, 'shop/profile.html', {'name':curUser.name})
+def buyRecord(request, user_id):
+	rtx = {}
+	rtx['user'] = User.objects.get(pk=user_id)
+	rtx['brand'] = Brand.objects.all()
+	records = Buy.objects.filter(user_id__user_id=user_id)
+
+	if request.method == 'POST':
+		computer_id = request.POST['computer_id']
+		brand = request.POST['brand']
+		shop = request.POST['shop']
+		minDate = request.POST['minDate']
+		maxDate = request.POST['maxDate']
+		minPrice = request.POST['minPrice']
+		maxPrice = request.POST['maxPrice']
+		
+		if computer_id != '':
+			records = records.filter(computer_id__computer_id=computer_id)
+		if brand != '':
+			records = records.filter(computer_id__brand__name=brand)
+		if shop != '':
+			records = records.filter(shop_id__name=shop)
+		if minDate != '':
+			y, m, d = minDate.split('-')
+			records = records.filter(buy_time__gte=datetime.date(int(y), int(m), int(d)))
+		if maxDate != '':
+			y, m, d = maxDate.split('-')
+			records = records.filter(buy_time__lte=datetime.date(int(y), int(m), int(d)))
+		if minPrice != '':
+			records = records.filter(price__gte=float(minPrice))
+		if maxPrice != '':
+			records = records.filter(price__lte=float(maxPrice))
+
+		if request.POST['sort'] != '':
+			sortKey = request.POST['sortType'] + request.POST['sort']
+			records = records.order_by(sortKey)
+
+	rtx['records'] = records
+
+	return render(request, 'shop/buyRecord.html', rtx)

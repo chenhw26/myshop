@@ -37,6 +37,10 @@ def computers(request):
       print(request.POST['brand'])
       computer = computer.filter(brand__name=request.POST['brand'])
 
+    if request.POST['sort'] != '':
+      sortKey = request.POST['sortType'] + request.POST['sort']
+      computer = computer.order_by(sortKey)
+
   ctx['computer'] = computer
   return render(request, "shop/computers.html", ctx)
 
@@ -46,4 +50,14 @@ def details(request, computer_id):
   rtx['markAmount'] = mark.objects.filter(computer_id__computer_id=computer_id).count()
   rtx['sell'] = Sell.objects.filter(computer_id__computer_id=computer_id)
   rtx['user_id'] = request.session['id']
+  rtx['sellAmount'] = Buy.objects.filter(computer_id__computer_id=computer_id).count()
+  rtx['comments'] = computer_comment.objects.filter(computer_id__computer_id=computer_id)
   return render(request, 'shop/computerDetail.html', rtx)
+
+def post(request, user_id, computer_id):
+  if request.method == 'POST':
+    computer = Computer.objects.get(pk=computer_id)
+    user = User.objects.get(pk=user_id)
+    computer_comment(computer_id=computer, user_id=user, content=request.POST['comment']).save()
+  
+  return HttpResponseRedirect(reverse('shop:computerDetail', args=(computer_id, )))

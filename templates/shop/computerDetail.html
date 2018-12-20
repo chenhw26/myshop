@@ -26,6 +26,8 @@
 	</ul>
 
 <h4>收藏人数: {{markAmount}} </h4>
+<h4>总销量: {{sellAmount}} </h4>
+
 <h2>在售店铺</h2>
 {% if not sell.exists %}
 <h4> 没有店铺在销售此电脑. </h4>
@@ -51,6 +53,25 @@
 </table>
 {% endif %}
 <a href="{% url 'shop:index' %}"> 返回首页 </a>
+
+<h2>评论</h2>
+{% if not comments.exists %}
+<h4>暂无评论</h4>
+{% else %}
+	{% for c in comments %}
+		<h4><a href="{% url 'shop:userIndex' c.user_id.user_id %}">{{c.user_id.name}}</a> &nbsp {{c.comment_date}}</h4>
+		{{c.content}}
+		<br>
+	{% endfor %}
+{% endif %}
+
+<h3> 发表你的评论 </h3>
+<form action="{% url 'shop:postComputerComment' user_id computer.computer_id %}" method="post">
+	{% csrf_token %}
+	<textarea name="comment" rows="5" cols="50"></textarea>
+	<br>
+	<input type="submit">
+</form>
 
 </body>
 </html>

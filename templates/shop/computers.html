@@ -20,6 +20,19 @@
               <option value={{b.name}}>{{b.name}}</option>
               {% endfor %}
               </select> <br>
+        排序: <select name='sort'>
+              <option value=""></option>
+              <option value="computer_id">型号</option>
+              <option value="cpu">cpu</option>
+              <option value="graphics_card">显卡</option>
+              <option value="memory">内存</option>
+              <option value="ssd_capacity">SSD</option>
+              <option value="disk_capacity">磁盘</option>
+              <option value="brand">品牌</option>
+              </select> &nbsp
+	    <input type="radio" name="sortType" value="" checked>升序
+	    <input type="radio" name="sortType" value="-">降序
+        <br>
         <input type="submit" value="筛选">
     </form>
 
@@ -53,5 +66,7 @@
 {% endif %}
 <br><br>
 <a href="{% url 'shop:computers' %}">清空筛选条件</a>
+<br>
+<a href="{% url 'shop:index' %}">返回首页</a>
 </body>
 </html>

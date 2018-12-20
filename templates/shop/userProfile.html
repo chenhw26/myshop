@@ -19,6 +19,7 @@
         {{record.buy_time}} &nbsp {{record.price}}元</li>
   {% endfor %}
   </ul>
+  <a href="{% url 'shop:buyRecord' user_id %}">查看更多</a>
   {% else %}
     无购买记录
 {% endif %}

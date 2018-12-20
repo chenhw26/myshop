@@ -19,7 +19,9 @@
 	{% endif %}
 </ul>
 <h5> 总价 {{total}}元. </h5>
-<a href="{% url 'shop:trolley_buy' user_id %}"> 购买 <a>
+<a href="{% url 'shop:trolley_buy' user_id %}"> 购买 </a>
+<br><br>
+<a href="{% url 'shop:index' %}"> 返回 </a>
 
 </body>
 </html>

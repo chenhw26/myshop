@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
+<title>Online Shop</title>
 
 <body>
 
 <h4> user id: {{user_id}},&nbsp user_name: {{user_name}},&nbsp 余额:{{balance}}</h4>
+<br>
+<a href="{% url 'shop:recharge' user_id %}"> 账户充值 </a>
 <br>
 <h5> 购买记录 </h5>
 {% if buy %}
@@ -42,12 +45,16 @@
 {% if coupon %}
   <ul>
   {% for record in coupon %}
-    <li>{{record.coupon_id.value}}元代金券</li>
+    <li>{{record.value}}元代金券,&nbsp {{record.expired}} &nbsp &nbsp 
+    <a href="{% url 'shop:deleteCoupon' record.coupon_id %}">删除</a>
+    </li>
   {% endfor %}
   </ul>
   {% else %}
     无可用代金券
 {% endif %}
+<br>
+<a href="{% url 'shop:getCoupon' user_id %}"> 领取代金券 </a>
 <br>
 <h5> 我的收藏 </h5>
 {% if mark %}

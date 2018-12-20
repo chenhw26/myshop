@@ -41,4 +41,9 @@ def computers(request):
   return render(request, "shop/computers.html", ctx)
 
 def details(request, computer_id):
-	return HttpResponse(str(computer_id) + 'detail')
+  rtx = {}
+  rtx['computer'] = get_object_or_404(Computer, pk=computer_id)
+  rtx['markAmount'] = mark.objects.filter(computer_id__computer_id=computer_id).count()
+  rtx['sell'] = Sell.objects.filter(computer_id__computer_id=computer_id)
+  rtx['user_id'] = request.session['id']
+  return render(request, 'shop/computerDetail.html', rtx)

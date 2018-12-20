@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Online Shop</title>
+</head>
+<body>
+<h2> 领取代金券 </h2>
+<form action="{% url 'shop:getCoupon' user_id %}" method="post">
+	{% csrf_token %}
+  请选择面值: <br>
+	<input type="radio" name="value" value="1">1元
+	<br>
+	<input type="radio" name="value" value="5">5元
+	<br> 
+	<input type="radio" name="value" value="10">10元
+	<br>
+	<input type="radio" name="value" value="50">50元
+	<br>
+	<input type="radio" name="value" value="100">100元
+	<br>
+	自定义面值: <input type="number" name="userDefinedValue" min="1" max="100"> 元(1~100)
+	<br>
+	<input type="submit" value="确认">
+	<br>
+	(每张代金券的有效期为7天)
+</form>
+
+</body>
+</html>

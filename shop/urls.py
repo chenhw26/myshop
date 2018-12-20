@@ -16,9 +16,12 @@ urlpatterns = [
     path('shops/details/<int:shop_id>/', shops.details, name='shopDetail'),
     path('trolley/<int:user_id>/', trolley.trolley, name='trolley'),
     path('trolley/<int:user_id>/buy/', trolley.buy, name='trolley_buy'),
-    path('trolley/add/<int:trolley_id>/', trolley.add, name='trolley_add'),
+    path('trolley/add/<str:sell_id>/<int:user_id>/', trolley.add, name='trolley_add'),
     path('trolley/delete/<int:trolley_id>/', trolley.delete, name='trolley_delete'),
-    path('brand/<str:name>/', brand.brand, name='brand')
+    path('brand/<str:name>/', brand.brand, name='brand'),
+    path('recharge/<int:user_id>', index.recharge, name='recharge'),
+    path('getCoupon/<int:user_id>/', index.getCoupon, name='getCoupon'),
+    path('deleteCoupon/<int:coupon_id>/', index.deleteCoupon, name='deleteCoupon'),
 ]
 
 # urlpatterns = [

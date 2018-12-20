@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<title>Online Shop</title>
+
+<body>
+<h1> {{computer.computer_id}} </h1>
+<h2> 性能参数 </h2>
+	<ul>
+		<li>cpu:&nbsp {{computer.cpu}}</li>
+		<li>显卡:&nbsp {{computer.graphics}}</li>
+		<li>内存:&nbsp {{computer.memory}}GB</li>
+		<li>内存:&nbsp {{computer.memory}}GB</li>
+		<li>SSD:&nbsp {{computer.ssd_capacity}}
+			{% if computer.ssd_capacity %}
+				GB
+			{% endif %}
+		</li>
+		<li>磁盘:&nbsp {{computer.disk_capacity}}
+			{% if computer.disk_capacity %}
+				GB
+			{% endif %}
+		</li>
+		<li>屏幕尺寸:&nbsp {{computer.screen_size}}寸</li>
+		<li><a href="{% url 'shop:brand' computer.brand.name %}">{{computer.brand.name}}</a></li>
+		<li>原产地:&nbsp {{computer.brand.country}}</li>
+	</ul>
+
+<h4>收藏人数: {{markAmount}} </h4>
+<h2>在售店铺</h2>
+{% if not sell.exists %}
+<h4> 没有店铺在销售此电脑. </h4>
+{% else %}
+<table>
+    <tr>
+        <td>店铺名</td>
+        <td>上架日期</td>
+        <td>发货地</td>
+        <td>售价(元)</td>
+				<td></td>
+				<td></td>
+    </tr>
+    {% for s in sell %}
+    <tr>
+        <td><a href="{% url 'shop:shopDetail'  s.shop_id.shop_id %}">{{s.shop_id.name}}</a></td>
+        <td>{{s.onsell_date}}</td>
+        <td>{{s.shop_id.city}}</td>
+        <td>{{s.price}}</td>
+				<td><a href="{% url 'shop:trolley_add' s.id user_id %}">加入购物车</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<a href="{% url 'shop:index' %}"> 返回首页 </a>
+
+</body>
+</html>

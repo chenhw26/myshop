@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+import datetime
 
 class Brand(models.Model):
 	name = models.CharField(max_length=15, primary_key=True)
@@ -31,6 +32,7 @@ class Shop(models.Model):
 	# 店铺id
 	shop_id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=50)
+	city = models.CharField(max_length=20, default='CAN')
 	address = models.CharField(max_length=50)
 	open_date = models.DateField(auto_now=False, auto_now_add=False)
 	seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
@@ -48,14 +50,8 @@ class Coupon(models.Model):
 	coupon_id = models.AutoField(primary_key=True)
 	# 该优惠券可减免的价格
 	value = models.FloatField(validators=[MinValueValidator(0)])
-
-# 表示用户拥有优惠券的表
-class Own_coupon(models.Model):
-	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-	coupon_id = models.ForeignKey(Coupon, on_delete=models.CASCADE)
-	class Meta:
-		# 表明(user_id, coupon)作为联合主键
-		unique_together = ("user_id", "coupon_id")
+	owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+	expired = models.DateField(auto_now=False, auto_now_add=False, default = datetime.date(2020, 1, 1))
 
 # 用户对店铺的评论
 class Shop_comment(models.Model):

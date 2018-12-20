@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<title>Online Shop</title>
+
+<body>
+
+<h4> seller id: {{seller.seller_id}},&nbsp seller_name: {{seller.name}},&nbsp 余额:{{seller.balance}}</h4>
+<br>
+<h5> 上月总营业额{{turnover.price__sum}}元 </h5>
+
+<h3>名下店铺</h3>
+{% if not shops.exists %}
+<h4> 没有店铺 </h4>
+{% else %}
+<table>
+    <tr>
+        <td>店铺名</td>
+        <td>发货地</td>
+        <td>开张日期</td>
+    </tr>
+    {% for shop in shops %}
+    <tr>
+        <td><a href="{% url 'shop:shopDetail'  shop.shop_id %}">{{shop.name}}</a></td>
+        <td>{{shop.city}}</td>
+        <td>{{shop.open_date}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<br>
+{% if curSeller %}
+<a href="{% url 'shop:openShop' seller.seller_id %}">开店</a>
+{% endif %}
+<br><br>
+
+<a href="{% url 'shop:computers' %}"> 查看所有电脑 </a> <br><br>
+<a href="{% url 'shop:shops' %}"> 查看所有店铺 </a> <br><br>
+<a href="{% url 'shop:logout' %}">Logout</a>
+</body>
+</html>

@@ -18,7 +18,7 @@ def userIndex(request, user_id):
 		rt['curUser'] = True
 	else: rt['curUser'] = False
 
-	curUser = User.objects.get(user_id=user_id)
+	curUser = get_object_or_404(User, user_id=user_id)
 	rt['user_id'] = curUser.user_id
 	rt['user_name'] = curUser.name
 	rt['balance'] = curUser.balance
@@ -73,7 +73,7 @@ def deleteCoupon(request, coupon_id):
 
 def buyRecord(request, user_id):
 	rtx = {}
-	rtx['user'] = User.objects.get(pk=user_id)
+	rtx['user'] = get_object_or_404(User, pk=user_id)
 	rtx['brand'] = Brand.objects.all()
 	records = Buy.objects.filter(user_id__user_id=user_id)
 

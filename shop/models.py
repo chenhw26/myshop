@@ -20,7 +20,7 @@ class Computer(models.Model):
 	ssd_capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
 	disk_capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
 	screen_size = models.CharField(max_length=10)
-	brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+	brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, blank=True, null=True)
 
 class Seller(models.Model):
 	seller_id = models.AutoField(primary_key=True)
@@ -57,7 +57,7 @@ class Coupon(models.Model):
 class Shop_comment(models.Model):
 	comment_id = models.AutoField(primary_key=True)
 	shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
-	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+	user_id = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 	content = models.TextField()
 
 # 表示店铺销售电脑的表
@@ -74,9 +74,9 @@ class Sell(models.Model):
 class Buy(models.Model):
 	# 允许同一个用户在同一个商店多次购买同一款电脑，所以需要额外的主键
 	buy_id = models.AutoField(primary_key=True)
-	computer_id = models.ForeignKey(Computer, on_delete=models.CASCADE)
-	shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
-	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+	computer_id = models.ForeignKey(Computer, on_delete=models.SET_NULL, blank=True, null=True)
+	shop_id = models.ForeignKey(Shop, on_delete=models.SET_NULL, blank=True, null=True)
+	user_id = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 	buy_time = models.DateField(auto_now=False, auto_now_add=True)
 	price = models.FloatField(validators=[MinValueValidator(0)])
 
@@ -91,7 +91,7 @@ class mark(models.Model):
 class computer_comment(models.Model):
 	computer_comment_id = models.AutoField(primary_key=True)
 	computer_id = models.ForeignKey(Computer, on_delete=models.CASCADE)
-	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+	user_id = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 	comment_date = models.DateField(auto_now=False, auto_now_add=True)
 	content = models.TextField()
 

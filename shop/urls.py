@@ -24,6 +24,7 @@ urlpatterns = [
     path('coupon/delete/<int:coupon_id>/', user.deleteCoupon, name='deleteCoupon'),
     path('buy/record/<int:user_id>/', user.buyRecord, name='buyRecord'),
     path('computers/details/post/<int:user_id>/<str:computer_id>/', computers.post, name='postComputerComment'),
+    path('seller/openshop/<int:seller_id>/', seller.openShop, name='openShop'),
 ]
 
 # urlpatterns = [

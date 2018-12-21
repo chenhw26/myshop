@@ -1,6 +1,8 @@
 from django.shortcuts import *
 from shop.models import *
+from django.db import transaction
 
+@transaction.atomic
 def computers(request):
   ctx = {}
   computer = Computer.objects.all()
@@ -44,6 +46,7 @@ def computers(request):
   ctx['computer'] = computer
   return render(request, "shop/computers.html", ctx)
 
+@transaction.atomic
 def details(request, computer_id):
   rtx = {}
   rtx['computer'] = get_object_or_404(Computer, pk=computer_id)
@@ -51,9 +54,11 @@ def details(request, computer_id):
   rtx['sell'] = Sell.objects.filter(computer_id__computer_id=computer_id)
   rtx['user_id'] = request.session['id']
   rtx['sellAmount'] = Buy.objects.filter(computer_id__computer_id=computer_id).count()
-  rtx['comments'] = computer_comment.objects.filter(computer_id__computer_id=computer_id)
+  rtx['comments'] = computer_comment.objects.filter(computer_id__computer_id=computer_id).order_by('-comment_date')
+  rtx['buys'] = Buy.objects.filter(computer_id__computer_id=computer_id).order_by('-buy_time')[:5]
   return render(request, 'shop/computerDetail.html', rtx)
 
+@transaction.atomic
 def post(request, user_id, computer_id):
   if request.method == 'POST':
     computer = Computer.objects.get(pk=computer_id)

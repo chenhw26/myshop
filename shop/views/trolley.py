@@ -3,6 +3,7 @@ from shop.models import *
 from django.db import transaction
 import datetime
 
+@transaction.atomic
 def trolley(request, user_id):
 	if not (request.session.get('id', None) == user_id and request.session.get('type', None) == 'user'):
 		return HttpResponse("Sorry, 你不能操作他人的购物车")

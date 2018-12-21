@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Online Shop</title>
+</head>
+<body>
+  <h2> 所有店铺 </h2>
+  <h5> 筛选条件 </h5>
+  <form action="{% url 'shop:shops' %}"method="post">
+    {% csrf_token %}
+    店铺名: <input type="text" name="name"><br>
+    发货地: <select name='city'>
+          <option value=""></option>
+          <option value="CAN">CAN</option>
+          <option value="PEK">PEK</option>
+          <option value="SHA">SHA</option>
+          <option value="SZX">SZX</option>
+					</select> <br>
+  	日期: <input type="date" name="minDate">&nbsp ~ &nbsp  <input type="date" name="maxDate"><br>
+    卖家名称: <input type="text"name="seller"><br>
+		排序: <select name='sort'>
+          <option value=""></option>
+          <option value="name">店铺名</option>
+          <option value="city">发货地</option>
+          <option value="open_date">开张日期</option>
+          <option value="seller">卖家名</option>
+          <option value="turnover">销售额</option>
+          </select> &nbsp
+	  <input type="radio" name="sortType" value=""checked>升序
+	  <input type="radio" name="sortType" value="-"降序>降序
+      <br>
+      <input type="submit" value="筛选">
+  </form>
+
+{% if not shops %}
+<h4> 没有符合条件的店铺. </h4>
+{% else %}
+<table>
+    <tr>
+        <td>店铺名</td>
+        <td>发货地</td>
+        <td>开张日期</td>
+        <td>卖家名</td>
+        <td>销售额</td>
+    </tr>
+    {% for shop_id, name, city, date, seller_id, seller, turnover in shops %}
+    <tr>
+        <td><a href="{% url 'shop:shopDetail'  shop_id %}">{{name}}</a></td>
+        <td>{{city}}</td>
+        <td>{{date}}</td>
+        <td><a href="{% url 'shop:sellerIndex'  seller_id %}">{{seller}}</a></td>
+        <td>{{turnover}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<br><br>
+<a href="{% url 'shop:shops' %}">清空筛选条件</a>
+<br>
+<a href="{% url 'shop:index' %}">返回首页</a>
+</body>
+</html>

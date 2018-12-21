@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import *
 from shop.models import *
+from django.db import transaction
 
 import hashlib
 
@@ -9,6 +10,7 @@ def md5Encode(s):
   m.update(s.encode(encoding='utf-8'))
   return m.hexdigest()
 
+@transaction.atomic
 def login(request):
 	rt = {'error_message': ''}
 	if request.method == 'GET':
@@ -55,6 +57,7 @@ def login(request):
 			request.session['id'], request.session['type'] = seller_id, 'seller'
 			return HttpResponseRedirect(reverse('shop:sellerIndex', args=(seller_id, )))
 
+@transaction.atomic
 def register(request):
 	rt = {'error_message': ''}
 	if request.method == 'GET':
@@ -83,7 +86,7 @@ def register(request):
 		elif type_ == 'seller':
 			new_seller = Seller(name=user_name, password=md5Encode(str(psw)))
 			new_seller.save()
-			request.session['id'], request.session['type'] = new_seller.seller_id, 'user'
+			request.session['id'], request.session['type'] = new_seller.seller_id, 'seller'
 			return HttpResponseRedirect(reverse('shop:sellerIndex', args=(new_seller.seller_id, )))
 
 def logout(request):

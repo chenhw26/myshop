@@ -5,12 +5,12 @@
 
 <body>
 
-<h4> seller id: {{seller.seller_id}},&nbsp seller_name: {{seller.name}},&nbsp 余额:{{seller.balance}}</h4>
+<h4> seller id: {{seller.seller_id}},&nbsp seller_name: {{seller.name}},&nbsp 余额:{{seller.balance}}元</h4>
 <br>
-<h5> 上月总营业额{{turnover.price__sum}}元 </h5>
+<h5> 上月总营业额{{turnover}}元 </h5>
 
 <h3>名下店铺</h3>
-{% if not shops.exists %}
+{% if not shops %}
 <h4> 没有店铺 </h4>
 {% else %}
 <table>
@@ -18,12 +18,16 @@
         <td>店铺名</td>
         <td>发货地</td>
         <td>开张日期</td>
+        <td>营业额</td>
     </tr>
-    {% for shop in shops %}
+    {% for id, name, city, date, turnover in shops %}
     <tr>
-        <td><a href="{% url 'shop:shopDetail'  shop.shop_id %}">{{shop.name}}</a></td>
-        <td>{{shop.city}}</td>
-        <td>{{shop.open_date}}</td>
+        <td><a href="{% url 'shop:shopDetail' id %}">{{name}}</a></td>
+        <td>{{city}}</td>
+        <td>{{date}}</td>
+        <td>{% if turnover %} {{turnover}}元
+            {% else %} 0.0元
+            {% endif %} </td>
     </tr>
     {% endfor %}
 </table>
@@ -32,8 +36,34 @@
 {% if curSeller %}
 <a href="{% url 'shop:openShop' seller.seller_id %}">开店</a>
 {% endif %}
-<br><br>
 
+<h3>最近交易</h3>
+{% if not sells.exists %}
+<h4> 您的店铺尚未有交易 </h4>
+{% else %}
+<table>
+    <tr>
+        <td>店铺</td>
+		<td>型号</td>
+        <td>买家</td>
+        <td>日期</td>
+        <td>价格</td>
+    </tr>
+    {% for s in sells %}
+    <tr>
+        <td><a href="{% url 'shop:shopDetail' s.shop_id.shop_id %}">{{s.shop_id.name}}</a></td>
+        <td><a href="{% url 'shop:computerDetail'  s.computer_id.computer_id %}">{{s.computer_id.computer_id}}</a></td>
+		<td><a href="{% url 'shop:userIndex' s.user_id.user_id %}">{{s.user_id.name}}</a></td>
+		<td>{{s.buy_time}}</td>
+		<td>{{s.price}}元</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<a href="{% url 'shop:sellerRecord' seller.seller_id %}"> 查看所有交易记录 </a>
+{% endif %}
+
+<br><br>
 <a href="{% url 'shop:computers' %}"> 查看所有电脑 </a> <br><br>
 <a href="{% url 'shop:shops' %}"> 查看所有店铺 </a> <br><br>
 <a href="{% url 'shop:logout' %}">Logout</a>

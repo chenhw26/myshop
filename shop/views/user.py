@@ -12,6 +12,7 @@ def index(request):
 	elif type_ == 'seller':
 		return HttpResponseRedirect(reverse('shop:sellerIndex', args=(user_id,)))
 
+@transaction.atomic
 def userIndex(request, user_id):
 	rt = {}
 	if request.session.get('id', None) == user_id and request.session.get('type') == 'user':
@@ -24,7 +25,7 @@ def userIndex(request, user_id):
 	rt['balance'] = curUser.balance
 
 	rt['coupon'] = Coupon.objects.filter(owner__user_id=user_id)
-	rt['buy'] = Buy.objects.filter(user_id__user_id=user_id)[:5]
+	rt['buy'] = Buy.objects.filter(user_id__user_id=user_id).order_by('-buy_time')[:5]
 	rt['mark'] = mark.objects.filter(user_id__user_id=user_id)
 	rt['trolley'] = shopping_cart.objects.filter(user_id__user_id=user_id)
 
@@ -67,10 +68,12 @@ def getCoupon(request, user_id):
 
 		return render(request, 'shop/notice.html', {'notice': '您已成功领取'+str(value)+'元代金券'})
 
+@transaction.atomic
 def deleteCoupon(request, coupon_id):
 	Coupon(coupon_id=coupon_id).delete()
 	return HttpResponseRedirect(reverse('shop:index'))
 
+@transaction.atomic
 def buyRecord(request, user_id):
 	rtx = {}
 	rtx['user'] = get_object_or_404(User, pk=user_id)
@@ -107,6 +110,6 @@ def buyRecord(request, user_id):
 			sortKey = request.POST['sortType'] + request.POST['sort']
 			records = records.order_by(sortKey)
 
-	rtx['records'] = records
+	rtx['records'] = records.order_by('-buy_time')
 
 	return render(request, 'shop/buyRecord.html', rtx)

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<title>Online Shop</title>
+{% comment %} 最近成交，评价 {% endcomment %}
+<body>
+<h1> {{shop.name}} </h1>
+
+<h2> 店铺详情 </h2>
+	<ul>
+		<li>发货地:&nbsp {{shop.city}}</li>
+		<li>详细地址:&nbsp {{shop.address}}</li>
+		<li>开张日期:&nbsp {{shop.open_date}}</li>
+		<li>卖家:&nbsp<a href="{% url 'shop:sellerIndex' shop.seller.seller_id %}">{{shop.seller.name}}</a></li>
+	</ul>
+
+<h2>在售</h2>
+{% if not sell.exists %}
+<h4> 该店铺没有在售电脑. </h4>
+{% else %}
+<table>
+    <tr>
+        <td>型号</td>
+				<td>cpu</td>
+        <td>内存<td>
+				<td>品牌</td>
+				<td>上架日期</td>
+        <td>售价(元)</td>
+				<td></td>
+    </tr>
+    {% for s in sell %}
+    <tr>
+        <td><a href="{% url 'shop:computerDetail'  s.computer_id.computer_id %}">{{s.computer_id.computer_id}}</a></td>
+        <td>{{s.computer_id.cpu}}</td>
+        <td>{{s.computer_id.memory}}GB</td>
+				<td><a href="{% url 'shop:brand' s.computer_id.brand.name %}">{{s.computer_id.brand.name}}</a></td>
+				<td>{{s.onsell_date}}</td>
+				<td>{{s.price}}元</td>
+				{% if isUser %}
+					<td><a href="{% url 'shop:trolley_add' s.id user_id %}">加入购物车</a></td>
+				{% endif %}
+		</tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<h4>上月销售额: {{sellAmount}} </h4>
+
+<h3>最近交易</h3>
+{% if not buys.exists %}
+<h4> 没有与此电脑相关的交易. </h4>
+{% else %}
+<table>
+    <tr>
+				<td>型号</td>
+        <td>买家</td>
+        <td>日期</td>
+        <td>价格</td>
+    </tr>
+    {% for b in buys %}
+    <tr>
+        <td><a href="{% url 'shop:computerDetail'  b.computer_id.computer_id %}">{{b.computer_id.computer_id}}</a></td>
+				<td><a href="{% url 'shop:userIndex' b.user_id.user_id %}">{{b.user_id.name}}</a></td>
+				<td>{{b.buy_time}}</td>
+				<td>{{b.price}}元</td>
+    </tr>
+    {% endfor %}
+</table>
+	<a href="{% url 'shop:shopSellRecord' shop.shop_id %}">查看所有交易记录</a>
+{% endif %}
+
+</body>
+</html>

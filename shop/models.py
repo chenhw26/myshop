@@ -32,9 +32,9 @@ class Shop(models.Model):
 	# 店铺id
 	shop_id = models.AutoField(primary_key=True)
 	name = models.CharField(max_length=50)
-	city = models.CharField(max_length=20, default='CAN')
+	city = models.CharField(max_length=20, default='CAN', choices=(('CAN', 'CAN'), ('PEK', 'PEK'), ('SHA', 'SHA'), ('SZX', 'SZX')))
 	address = models.CharField(max_length=50)
-	open_date = models.DateField(auto_now=False, auto_now_add=False)
+	open_date = models.DateField(auto_now=False, auto_now_add=True)
 	seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
 
 class User(models.Model):

@@ -25,6 +25,8 @@ urlpatterns = [
     path('buy/record/<int:user_id>/', user.buyRecord, name='buyRecord'),
     path('computers/details/post/<int:user_id>/<str:computer_id>/', computers.post, name='postComputerComment'),
     path('seller/openshop/<int:seller_id>/', seller.openShop, name='openShop'),
+    path('seller/record/<int:seller_id>/', seller.sellRecord, name='sellerRecord'),
+    path('shop/record/<int:shop_id>/', shops.sellRecord, name='shopSellRecord'),
 ]
 
 # urlpatterns = [

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Online Shop</title>
+</head>
+<body>
+<h2> 开店 </h2>
+<form action="{% url 'shop:openShop' seller_id %}" method="post">
+	{% csrf_token %}
+  请店铺名: <input type="text" name="name">
+	<br>
+	发货地: <select name='city'>
+      	<option value="CAN">CAN</option>
+      	<option value="PEK">PEK</option>
+      	<option value="SHA">SHA</option>
+      	<option value="SZX">SZX</option>
+      	</select> &nbsp
+	<br>
+	详细地址: <input type="text" name="address">
+	<br>
+	<input type="submit" value="确认">
+</form>
+
+
+</body>
+</html>

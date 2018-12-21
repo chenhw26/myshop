@@ -36,7 +36,6 @@
         <td>发货地</td>
         <td>售价(元)</td>
 				<td></td>
-				<td></td>
     </tr>
     {% for s in sell %}
     <tr>
@@ -44,14 +43,19 @@
         <td>{{s.onsell_date}}</td>
         <td>{{s.shop_id.city}}</td>
         <td>{{s.price}}</td>
-				<td><a href="{% url 'shop:trolley_add' s.id user_id %}">加入购物车</a></td>
-    </tr>
+				{% if isUser %}
+					<td><a href="{% url 'shop:trolley_add' s.id user_id %}">加入购物车</a></td>
+				{% endif %}
+		</tr>
     {% endfor %}
 </table>
 {% endif %}
 <a href="{% url 'shop:index' %}"> 返回首页 </a>
 
 <h4>收藏人数: {{markAmount}} </h4>
+{% if isUser %}
+<a href="{% url 'shop:mark' computer.computer_id user_id %}">{{mark}}</a>
+{% endif %}
 <h4>总销量: {{sellAmount}} </h4>
 
 <h3>最近交易</h3>

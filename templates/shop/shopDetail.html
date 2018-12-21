@@ -14,7 +14,7 @@
 	</ul>
 
 <h2>在售</h2>
-{% if not sell.exists %}
+{% if not sell %}
 <h4> 该店铺没有在售电脑. </h4>
 {% else %}
 <table>
@@ -25,29 +25,35 @@
 				<td>品牌</td>
 				<td>上架日期</td>
         <td>售价(元)</td>
+				<td>月销量</td>
 				<td></td>
     </tr>
-    {% for s in sell %}
+    {% for id, computer_id, cpu, memory, brand_name, onsell_date, price, amount in sell %}
     <tr>
-        <td><a href="{% url 'shop:computerDetail'  s.computer_id.computer_id %}">{{s.computer_id.computer_id}}</a></td>
-        <td>{{s.computer_id.cpu}}</td>
-        <td>{{s.computer_id.memory}}GB</td>
-				<td><a href="{% url 'shop:brand' s.computer_id.brand.name %}">{{s.computer_id.brand.name}}</a></td>
-				<td>{{s.onsell_date}}</td>
-				<td>{{s.price}}元</td>
+        <td><a href="{% url 'shop:computerDetail'  computer_id %}">{{computer_id}}</a></td>
+        <td>{{cpu}}</td>
+        <td>{{memory}}GB</td>
+				<td><a href="{% url 'shop:brand' brand_name %}">{{brand_name}}</a></td>
+				<td>{{onsell_date}}</td>
+				<td>{{price}}元</td>
+				<td>{{amount}}</td>
 				{% if isUser %}
-					<td><a href="{% url 'shop:trolley_add' s.id user_id %}">加入购物车</a></td>
+					<td><a href="{% url 'shop:trolley_add' id user_id %}">加入购物车</a></td>
 				{% endif %}
 		</tr>
     {% endfor %}
 </table>
+{% endif %}
+{% if curSeller %}
+<br>
+<a href="{% url 'shop:shopManage' shop.shop_id %}"> 管理商品 </a>
 {% endif %}
 
 <h4>上月销售额: {{sellAmount}} </h4>
 
 <h3>最近交易</h3>
 {% if not buys.exists %}
-<h4> 没有与此电脑相关的交易. </h4>
+<h4> 此店铺最近没有交易. </h4>
 {% else %}
 <table>
     <tr>
@@ -67,6 +73,28 @@
 </table>
 	<a href="{% url 'shop:shopSellRecord' shop.shop_id %}">查看所有交易记录</a>
 {% endif %}
+
+<h2>评论</h2>
+{% if not comments.exists %}
+<h4>暂无评论</h4>
+{% else %}
+	{% for c in comments %}
+		<h4><a href="{% url 'shop:userIndex' c.user_id.user_id %}">{{c.user_id.name}}</a> &nbsp {{c.comment_date}}</h4>
+		{{c.content}}
+		<br>
+	{% endfor %}
+{% endif %}
+
+<h3> 发表你的评论 </h3>
+<form action="{% url 'shop:postShopComment' user_id shop.shop_id %}" method="post">
+	{% csrf_token %}
+	<textarea name="comment" rows="5" cols="50"></textarea>
+	<br>
+	<input type="submit">
+</form>
+
+</body>
+</html>
 
 </body>
 </html>

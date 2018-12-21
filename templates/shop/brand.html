@@ -1,6 +1,46 @@
 <!DOCTYPE html>
 <html>
 <body>
-{{name}}
+
+<body>
+<h1> {{brand.name}} </h1>
+<h2> 概况 </h2>
+	<ul>
+		<li>来自:&nbsp {{brand.country}}</li>
+		<li>创立时间:&nbsp {{brand.found_date}}</li>
+		<li>网站:&nbsp<a href={{net}}>{{net}}</a></li>
+		<li>上月销售额:&nbsp {{turnover}}</li>
+		<li>关注人数:&nbsp {{likeNumber}}</li>
+	</ul>
+
+{% if isUser %}
+<a href="{% url 'shop:like' brand.name user_id %}"> {{like}} </a>
+{% endif %}
+
+<h2>旗下产品</h2>
+{% if not computers %}
+<h4> 该品牌暂无产品. </h4>
+{% else %}
+<table>
+    <tr>
+        <td>型号</td>
+				<td>cpu</td>
+        <td>内存<td>
+				<td>月销量</td>
+				<td></td>
+    </tr>
+    {% for computer_id, cpu, memory, amount in computers %}
+    <tr>
+        <td><a href="{% url 'shop:computerDetail'  computer_id %}">{{computer_id}}</a></td>
+        <td>{{cpu}}</td>
+        <td>{{memory}}GB</td>
+				<td>{{amount}}</td>
+		</tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+</body>
+</html>
 </body>
 </html>

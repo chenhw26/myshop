@@ -1,6 +1,7 @@
 from django.shortcuts import *
 from shop.models import *
 from django.db import transaction
+from django.core.exceptions import *
 
 @transaction.atomic
 def computers(request):
@@ -49,6 +50,7 @@ def computers(request):
 @transaction.atomic
 def details(request, computer_id):
   rtx = {}
+  rtx['isUser'] = request.session['type'] == 'user'
   rtx['computer'] = get_object_or_404(Computer, pk=computer_id)
   rtx['markAmount'] = mark.objects.filter(computer_id__computer_id=computer_id).count()
   rtx['sell'] = Sell.objects.filter(computer_id__computer_id=computer_id)
@@ -56,6 +58,10 @@ def details(request, computer_id):
   rtx['sellAmount'] = Buy.objects.filter(computer_id__computer_id=computer_id).count()
   rtx['comments'] = computer_comment.objects.filter(computer_id__computer_id=computer_id).order_by('-comment_date')
   rtx['buys'] = Buy.objects.filter(computer_id__computer_id=computer_id).order_by('-buy_time')[:5]
+  
+  if rtx['isUser']:
+    rtx['mark'] = ('收藏' if mark.objects.filter(user_id__user_id=rtx['user_id'], computer_id=rtx['computer']).count() == 0 else '取消收藏')
+
   return render(request, 'shop/computerDetail.html', rtx)
 
 @transaction.atomic
@@ -64,5 +70,16 @@ def post(request, user_id, computer_id):
     computer = Computer.objects.get(pk=computer_id)
     user = User.objects.get(pk=user_id)
     computer_comment(computer_id=computer, user_id=user, content=request.POST['comment']).save()
+  
+  return HttpResponseRedirect(reverse('shop:computerDetail', args=(computer_id, )))
+
+def makeMark(request, computer_id, user_id):
+  try:
+    m = mark.objects.get(computer_id__computer_id=computer_id, user_id__user_id=user_id)
+    m.delete()
+  except ObjectDoesNotExist:
+    computer = get_object_or_404(Computer, pk=computer_id)
+    user = get_object_or_404(User, pk=user_id)
+    mark(computer_id=computer, user_id=user).save()
   
   return HttpResponseRedirect(reverse('shop:computerDetail', args=(computer_id, )))

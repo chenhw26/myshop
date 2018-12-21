@@ -59,6 +59,7 @@ class Shop_comment(models.Model):
 	shop_id = models.ForeignKey(Shop, on_delete=models.CASCADE)
 	user_id = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 	content = models.TextField()
+	comment_date = models.DateField(auto_now=False, auto_now_add=True, blank=True, null=True)
 
 # 表示店铺销售电脑的表
 class Sell(models.Model):
@@ -84,7 +85,6 @@ class Buy(models.Model):
 class mark(models.Model):
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 	computer_id = models.ForeignKey(Computer, on_delete=models.CASCADE)
-	mark_date = models.DateField(auto_now=False, auto_now_add=True)
 	class Meta:
 		unique_together = ('user_id', 'computer_id')
 

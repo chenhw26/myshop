@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Online Shop</title>
+</head>
+<body>
+    <h2> 所有品牌 </h2>
+    <form action="{% url 'shop:allBrands' %}" method="post">
+        {% csrf_token %}
+        排序: <select name='sort'>
+              <option value="name">名称</option>
+              <option value="country">国家</option>
+              <option value="found_date">创立时间</option>
+              <option value="computerNumber">产品数</option>
+              <option value="turnover">销售额</option>
+              </select> &nbsp
+	    <input type="radio" name="sortType" value="" checked>升序
+	    <input type="radio" name="sortType" value="-">降序
+        <br>
+        <input type="submit" value="排序">
+    </form>
+
+{% if not brands %}
+<h4> 没有符合条件的电脑. </h4>
+{% else %}
+<table>
+    <tr>
+        <td>名称</td>
+        <td>国家</td>
+        <td>创立时间</td>
+        <td>产品数</td>
+        <td>销售额</td>
+    </tr>
+    {% for name, country, found_date, computerNumber, turnover in brands %}
+    <tr>
+        <td><a href="{% url 'shop:brand' name %}">{{name}}</a></td>
+        <td>{{country}}</td>
+        <td>{{found_date}}</td>
+        <td>{{computerNumber}}</td>
+        <td>{{turnover}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+<br><br>
+<br>
+<a href="{% url 'shop:index' %}">返回首页</a>
+</body>
+</html>

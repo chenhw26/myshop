@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2> {{shop.name}} 管理页面 </h2>
+<h4>已上架商品</h4>
+{% if not sell %}
+<h5> 该店铺没有在售电脑. </h5>
+{% else %}
+<table>
+    <tr>
+        <td>型号</td>
+				<td>品牌</td>
+				<td>上架日期</td>
+        <td>售价(元)</td>
+				<td>月销量</td>
+				<td></td>
+    </tr>
+    {% for computer_id, brand_name, onsell_date, price, amount in sell %}
+    <tr>
+        <td><a href="{% url 'shop:computerDetail'  computer_id %}">{{computer_id}}</a></td>
+				<td><a href="{% url 'shop:brand' brand_name %}">{{brand_name}}</a></td>
+				<td>{{onsell_date}}</td>
+				<td>{{price}}元</td>
+				<td>{{amount}}</td>
+				<td><a href="{% url 'shop:shopComputerManage' shop.shop_id computer_id %}">编辑</a></td>
+		</tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<h4>其他商品</h4>
+<table>
+    <tr>
+        <td>型号</td>
+				<td>品牌</td>
+				<td></td>
+    </tr>
+    {% for computer_id, brand_name in unsell %}
+    <tr>
+        <td><a href="{% url 'shop:computerDetail' computer_id %}">{{computer_id}}</a></td>
+				<td><a href="{% url 'shop:brand' brand_name %}">{{brand_name}}</a></td>
+				<td><a href="{% url 'shop:shopComputerAdd' shop.shop_id computer_id %}">上架</a></td>
+		</tr>
+    {% endfor %}
+</table>
+
+<br><br>
+<a href="{% url 'shop:shopDetail' shop.shop_id %}"> 返回 </a>
+
+</body>
+</html>

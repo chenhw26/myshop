@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<title>Online Shop</title>
+
+<body>
+<h1> {{computer.computer_id}} </h1>
+<h2> 上架该电脑 </h2>
+	<ul>
+		<li>cpu:&nbsp {{computer.cpu}}</li>
+		<li>显卡:&nbsp {{computer.graphics}}</li>
+		<li>内存:&nbsp {{computer.memory}}GB</li>
+		<li>内存:&nbsp {{computer.memory}}GB</li>
+		<li>SSD:&nbsp {{computer.ssd_capacity}}
+			{% if computer.ssd_capacity %}
+				GB
+			{% endif %}
+		</li>
+		<li>磁盘:&nbsp {{computer.disk_capacity}}
+			{% if computer.disk_capacity %}
+				GB
+			{% endif %}
+		</li>
+		<li>屏幕尺寸:&nbsp {{computer.screen_size}}寸</li>
+		<li><a href="{% url 'shop:brand' computer.brand.name %}">{{computer.brand.name}}</a></li>
+		<li>原产地:&nbsp {{computer.brand.country}}</li>
+	</ul>
+
+{{error}}
+<br>
+<form action="{% url 'shop:shopComputerAdd' shop_id computer.computer_id %}" method="post">
+	{% csrf_token %}
+	售价: <input type="number" name="newPrice">
+	&nbsp &nbsp
+	<br>
+	<input type="submit" value="确认上架">
+</form>
+<br><br>
+<a href="{% url 'shop:shopManage' shop_id %}">返回</a>
+</body>
+</html>

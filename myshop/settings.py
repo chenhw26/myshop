@@ -25,7 +25,11 @@ SECRET_KEY = 'pm_ow0ue0)@h1m(5wcm(p5s6a&_l1d20z6nlv-ktogf^04=bj$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['45.77.208.126',]
+=======
+ALLOWED_HOSTS = ['45.77.208.126']
+>>>>>>> cf5ae952926c9126b634ec562bab7418001d9484
 
 
 # Application definition
@@ -81,7 +85,6 @@ DATABASES = {
          'USER': 'root',
          'PASSWORD': 'Chw6951.',
          'HOST': '127.0.0.1',
-        #  'PORT': '4645',
      },
 }
 

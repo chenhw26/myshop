@@ -40,6 +40,25 @@
 </table>
 {% endif %}
 
+<h2>关注用户</h2>
+{% if not followers.exists %}
+<h4> 该品牌暂无关注者. </h4>
+{% else %}
+<table>
+    <tr>
+        <td>用户名</td>
+				<td>时间</td>
+				<td></td>
+    </tr>
+    {% for f in followers %}
+    <tr>
+        <td><a href="{% url 'shop:userIndex' f.user_id.user_id %}">{{f.user_id.name}}</a></td>
+				<td>{{f.date}}</td>
+		</tr>
+    {% endfor %}
+</table>
+{% endif %}
+
 </body>
 </html>
 </body>

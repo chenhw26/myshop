@@ -11,6 +11,7 @@ def brand(request, name):
 	rtx['brand'] = Brand.objects.get(pk=name)
 	rtx['turnover'] = Buy.objects.filter(computer_id__brand=rtx['brand']).aggregate(Sum('price'))[r'price__sum']
 	rtx['likeNumber'] = like.objects.filter(brand_name=rtx['brand']).count()
+	rtx['followers'] = like.objects.filter(brand_name=rtx['brand'])
 
 	rtx['like'] = '取消关注' if like.objects.filter(brand_name__name=name, user_id__user_id=rtx['user_id']).count() > 0 else '关注'
 

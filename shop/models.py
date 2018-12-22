@@ -99,6 +99,7 @@ class computer_comment(models.Model):
 class like(models.Model):
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 	brand_name = models.ForeignKey(Brand, on_delete=models.CASCADE)
+	date = models.DateField(auto_now=False, auto_now_add=True, null=True, blank=True)
 	class Meta:
 		unique_together = ('user_id', 'brand_name')
 

@@ -34,5 +34,5 @@ urlpatterns = [
     path('shop/delete/<int:shop_id>/computer/<str:computer_id>/', shops.computerDelete, name='shopComputerDelete'),
     path('computers/detail/<str:computer_id>/mark/<int:user_id>/', computers.makeMark, name='mark'),
     path('brand/like/<str:name>/<int:user_id>/', brand.makeLike, name='like'),
-    path('/all/brand/', brand.allBrands, name='allBrands'),
+    path('all/brand/', brand.allBrands, name='allBrands'),
 ]

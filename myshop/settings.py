@@ -25,7 +25,7 @@ SECRET_KEY = 'pm_ow0ue0)@h1m(5wcm(p5s6a&_l1d20z6nlv-ktogf^04=bj$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['45.77.208.126',]
 
 
 # Application definition
@@ -125,6 +125,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     'static',
+]
+
+MEDIA_URL = '/media/'
+MEDIAFILES_DIRS = [
+    'media',
 ]
 
 APPEND_SLASH = False

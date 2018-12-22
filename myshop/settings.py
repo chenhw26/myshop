@@ -124,6 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     'static',
+    '/usr/local/lib/python3.6/dist-packages/django/contrib/admin/static',
 ]
 
 MEDIA_URL = '/media/'

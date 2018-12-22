@@ -76,15 +76,12 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 DATABASES = {
     'default': {
-         'ENGINE': 'sql_server.pyodbc',
+         'ENGINE': 'django.db.backends.mysql',
          'NAME': 'OnlineShop',
-         'USER': 'django',
-         'PASSWORD': '666',
+         'USER': 'root',
+         'PASSWORD': 'Chw6951.',
          'HOST': '127.0.0.1',
-         'PORT': '',
-         'OPTIONS': {
-              'driver':'SQL Server Native Client 11.0',
-         },
+         'PORT': '4645',
      },
 }
 

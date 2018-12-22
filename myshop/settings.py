@@ -126,6 +126,11 @@ STATICFILES_DIRS = [
     'static',
 ]
 
+MEDIA_URL = '/media/'
+MEDIAFILES_DIRS = [
+    'media',
+]
+
 APPEND_SLASH = False
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

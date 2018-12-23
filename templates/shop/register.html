@@ -12,29 +12,34 @@
     <form action="{% url 'shop:register' %}" method="post">
         {% csrf_token %}
         <ul>
-            <li>
+            <li style="text-align:center;font-family:arial;color:red;font-size:24px;">
                 {{error_message}}
             </li>
+            <br>
             <li>
                 <div class="text">
                     <span class="yonghu"> </span><input type="text" placeholder="请输入用户名" name="user_name">
                 </div>
             </li>
+            <br>
             <li>
                 <div class="password">
                     <span class="mima"> </span><input type="password" placeholder="请输入密码" name="psw">
                 </div>
             </li>
+            <br>
             <li>
                 <div class="password">
                     <span class="mima"> </span><input type="password" placeholder="请再次输入密码" name="psw_confirm">
                 </div>
             </li>
+            <br>
             <li>
                 <div class="text">
                     <span class="mima"> </span><input type="text" placeholder="请输入收货地址" name="address">
                 </div>
             </li>
+            <br>
             <li>
             <input type="radio" name="sex" value="M" checked>   Male
             <input type="radio" name="sex" value="F">   Female
@@ -46,14 +51,9 @@
             <li>
                 <input type="submit" value="注册">
             </li>
-            <li><br><a href="{% url 'shop:login' %}">登录</a></li>
+            <p style="text-align:center;font-family:arial;color:blue;font-size:18px;"><br><a href="{% url 'shop:login' %}">登录</a></p>
         </ul>
     </form>
-    <div class="footer">
-        <p>iyaq Personal Blog  <a href="">Copyright ©2012 Wang Yuyan</a></p>
-        <p><a href="">iiyaq Home</a> | <a href="">Bolg
-        </a> | <a href="">Work</a> | <a href="">Terms of Use</a> | <a href="">Contact Me</a></p>
-    </div>
 </div>
 </body>
 </html>

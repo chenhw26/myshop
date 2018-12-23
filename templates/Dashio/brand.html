@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="Dashboard">
+  <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+  <title>Online Shop</title>
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png'%}" rel="icon">
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <!--external css-->
+  <link href="{% static 'lib/font-awesome/css/font-awesome.css'%}" rel="stylesheet" />
+  <link href="{% static 'lib/advanced-datatable/css/demo_page.css'%}" rel="stylesheet" />
+  <link href="{% static 'lib/advanced-datatable/css/demo_table.css'%}" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'lib/advanced-datatable/css/DT_bootstrap.css'%}" />
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/style.css'%}" rel="stylesheet">
+  <link href="{% static 'css/style-responsive.css'%}" rel="stylesheet">
+
+</head>
+
+<body>
+  <section id="container">
+    <!-- **********************************************************************************************************************************************************
+        TOP BAR CONTENT & NOTIFICATIONS
+        *********************************************************************************************************************************************************** -->
+    <!--header start-->
+    <header class="header black-bg">
+      <div class="sidebar-toggle-box">
+        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+      </div>
+      <!--logo start-->
+      <a href="index.html" class="logo"><b>Com<span>puter</span></b></a>
+      <!--logo end-->
+      <div class="nav notify-row" id="top_menu">
+        <!--  notification start -->
+        <ul class="nav top-menu">
+          
+          
+      </div>
+      <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+          <li><a class="logout" href="{% url 'shop:logout' %}">Logout</a></li>
+        </ul>
+      </div>
+    </header>
+    <!--header end-->
+    <!-- **********************************************************************************************************************************************************
+        MAIN SIDEBAR MENU
+        *********************************************************************************************************************************************************** -->
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+           <li class="mt">
+            <a href="{% url 'shop:index' %}">
+              <i class="fa fa-user"></i>
+              <span>个人空间</span>
+              </a>
+          </li>
+          <li class="mt">
+            <a href="{% url 'shop:computers' %}">
+              <i class="fa fa-desktop"></i>
+              <span>所有电脑</span>
+              </a>
+          </li>
+          <li class="mt">
+            <a href="{% url 'shop:shops' %}">
+              <i class="fa fa-building-o"></i>
+              <span>所有店铺</span>
+              </a>
+          </li>
+          <li class="mt">
+            <a href="{% url 'shop:allBrands' %}">
+              <i class="fa fa-male"></i>
+              <span>所有品牌</span>
+              </a>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+    <!-- **********************************************************************************************************************************************************
+        MAIN CONTENT
+        *********************************************************************************************************************************************************** -->
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <h1><i class="fa fa-angle-right"></i>{{brand.name}}</h1>
+        <p>来自:&nbsp {{brand.country}}</p>
+        <p>创立时间:&nbsp {{brand.found_date}}</p>
+        <p>网站:&nbsp<a href={{net}}>{{net}}</a></p>
+        <p>上月销售额:&nbsp {{turnover}}</p>
+        <p>关注人数:&nbsp {{likeNumber}}</p>
+        <p>{% if isUser %}<a href="{% url 'shop:like' brand.name user_id %}"> <button type="button" class="btn btn-warning btn-sm">{{like}} </button></a>{% endif %}</p>
+          <div class="col-md-12 mt">
+            <div class="content-panel">
+              <table class="table table-hover">
+                <h3><i class="fa fa-angle-right"></i>旗下产品</h3>
+                <hr>
+                <thead>
+                  <tr>
+                    <th><i class="fa fa-desktop"></i>型号</th>
+                    <th>cpu</th>
+                    <th>内存</th>
+                    <th><i class="fa fa-truck"></i>月销量</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for computer_id, cpu, memory, amount in computers %}
+                  <tr>
+                    <td><a href="{% url 'shop:computerDetail'  computer_id %}">{{computer_id}}</a></td>
+                    <td>{{cpu}}</td>
+                    <td>{{memory}}GB</td>
+				            <td>{{amount}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="col-md-12 mt">
+            <div class="content-panel">
+              <table class="table table-hover">
+                <h3><i class="fa fa-angle-right"></i>关注用户</h3>
+                <hr>
+                <thead>
+                  <tr>
+                    <td><i class="fa fa-user"></i>用户名</td>
+				            <td><i class="fa fa-clock-o"></i>时间</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for f in followers %}
+                  <tr>
+                    <td><a href="{% url 'shop:userIndex' f.user_id.user_id %}">{{f.user_id.name}}</a></td>
+				            <td>{{f.date}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- page end-->
+        </div>
+        <!-- /row -->
+      </section>
+      <!-- /wrapper -->
+    </section>
+    <!-- /MAIN CONTENT -->
+    <!--main content end-->
+
+  </section>
+  <!-- js placed at the end of the document so the pages load faster -->
+  <script src="{% static 'lib/jquery/jquery.min.js'%}"></script>
+  <script type="text/javascript" language="javascript" src="{% static 'lib/advanced-datatable/js/jquery.js'%}"></script>
+  <script src="{% static 'lib/bootstrap/js/bootstrap.min.js'%}"></script>
+  <script class="include" type="text/javascript" src="{% static 'lib/jquery.dcjqaccordion.2.7.js'%}"></script>
+  <script src="{% static 'lib/jquery.scrollTo.min.js'%}"></script>
+  <script src="{% static 'lib/jquery.nicescroll.js'%}" type="text/javascript"></script>
+  <script type="text/javascript" language="javascript" src="{% static 'lib/advanced-datatable/js/jquery.dataTables.js'%}"></script>
+  <script type="text/javascript" src="{% static 'lib/advanced-datatable/js/DT_bootstrap.js'%}"></script>
+  <!--common script for all pages-->
+  <script src="{% static 'lib/common-scripts.js'%}"></script>
+</body>
+
+</html>

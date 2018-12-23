@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="Dashboard">
+  <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+  <title>Online Shop</title>
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png'%}" rel="icon">
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <!--external css-->
+  <link href="{% static 'lib/font-awesome/css/font-awesome.css'%}" rel="stylesheet" />
+  <link href="{% static 'lib/advanced-datatable/css/demo_page.css'%}" rel="stylesheet" />
+  <link href="{% static 'lib/advanced-datatable/css/demo_table.css'%}" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'lib/advanced-datatable/css/DT_bootstrap.css'%}" />
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/style.css'%}" rel="stylesheet">
+  <link href="{% static 'css/style-responsive.css'%}" rel="stylesheet">
+
+  <!-- =======================================================
+    Template Name: Dashio
+    Template URL: https://templatemag.com/dashio-bootstrap-admin-template/
+    Author: TemplateMag.com
+    License: https://templatemag.com/license/
+  ======================================================= -->
+</head>
+
+<body>
+  <section id="container">
+    <!-- **********************************************************************************************************************************************************
+        TOP BAR CONTENT & NOTIFICATIONS
+        *********************************************************************************************************************************************************** -->
+    <!--header start-->
+    <header class="header black-bg">
+      <div class="sidebar-toggle-box">
+        <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+      </div>
+      <!--logo start-->
+      <a href="index.html" class="logo"><b>COM<span>PUTER</span></b></a>
+      <!--logo end-->
+      <div class="nav notify-row" id="top_menu">
+        <!--  notification start -->
+        <ul class="nav top-menu">
+          
+          
+      </div>
+      <div class="top-menu">
+        <ul class="nav pull-right top-menu">
+          <li><a class="logout" href="{% url 'shop:logout' %}">Logout</a></li>
+        </ul>
+      </div>
+    </header>
+    <!--header end-->
+    <!-- **********************************************************************************************************************************************************
+        MAIN SIDEBAR MENU
+        *********************************************************************************************************************************************************** -->
+    <!--sidebar start-->
+    <aside>
+      <div id="sidebar" class="nav-collapse ">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+          <li class="mt">
+            <a href="{% url 'shop:index' %}">
+              <i class="fa fa-user"></i>
+              <span>个人空间</span>
+              </a>
+          </li>
+          <li class="mt">
+            <a href="{% url 'shop:computers' %}">
+              <i class="fa fa-desktop"></i>
+              <span>所有电脑</span>
+              </a>
+          </li>
+          <li class="mt">
+            <a href="{% url 'shop:shops' %}">
+              <i class="fa fa-building-o"></i>
+              <span>所有店铺</span>
+              </a>
+          </li>
+          <li class="mt">
+            <a href="{% url 'shop:allBrands' %}">
+              <i class="fa fa-male"></i>
+              <span>所有品牌</span>
+              </a>
+          </li>
+        </ul>
+        <!-- sidebar menu end-->
+      </div>
+    </aside>
+    <!--sidebar end-->
+    <!-- **********************************************************************************************************************************************************
+        MAIN CONTENT
+        *********************************************************************************************************************************************************** -->
+    <!--main content start-->
+    <section id="main-content">
+      <section class="wrapper">
+        <h2><i class="fa fa-shopping-cart"></i>{{name}} 的购物车</h2>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="content-panel">
+              <hr>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th><i class="fa fa-desktop"></i>型号</th>
+                    <th><i class=" fa fa-home">店铺</th>
+                    <th><i class="fa fa-rmb"></i>价格</th>
+                    <th><i class="fa fa-hand-paper-o"></i>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for t in trolley%}
+                  <tr>
+                      <td><a href="{% url 'shop:computerDetail' t.sell.computer_id.computer_id %}"> {{t.sell.computer_id.computer_id}} </a></td>
+                      <td><a href="{% url 'shop:shopDetail' t.sell.shop_id.shop_id %}"> {{t.sell.shop_id.name}} </a></td>
+                      <td>{{t.sell.price}}元</td>
+                      <td><a href="{% url 'shop:trolley_delete' t.id %}"> <button type="button" class="btn btn-danger btn-xs">删除</button> </a></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <br><br>
+	{% if coupon %}
+		<p> 优惠券共计减免{{couponTotal}}元. </p>
+	{% else %}
+		<p> 当前无可使用的优惠券. </p>
+	{% endif %}
+</ul>
+<h4> 总价 {{total}}元. </h4>
+<a href="{% url 'shop:trolley_buy' user_id %}"> <button type="button" class="btn btn-success">购买</button> </a>
+<br><br>
+<a href="{% url 'shop:index' %}"> <button type="button" class="btn btn-primary">返回</button> </a>
+
+        <!-- /row -->
+      </section>
+      <!-- /wrapper -->
+    </section>
+    <!-- /MAIN CONTENT -->
+    <!--main content end-->
+
+  </section>
+  <!-- js placed at the end of the document so the pages load faster -->
+  <script src="{% static 'lib/jquery/jquery.min.js'%}"></script>
+  <script type="text/javascript" language="javascript" src="{% static 'lib/advanced-datatable/js/jquery.js'%}"></script>
+  <script src="{% static 'lib/bootstrap/js/bootstrap.min.js'%}"></script>
+  <script class="include" type="text/javascript" src="{% static 'lib/jquery.dcjqaccordion.2.7.js'%}"></script>
+  <script src="{% static 'lib/jquery.scrollTo.min.js'%}"></script>
+  <script src="{% static 'lib/jquery.nicescroll.js'%}" type="text/javascript"></script>
+  <script type="text/javascript" language="javascript" src="{% static 'lib/advanced-datatable/js/jquery.dataTables.js'%}"></script>
+  <script type="text/javascript" src="{% static 'lib/advanced-datatable/js/DT_bootstrap.js'%}"></script>
+  <!--common script for all pages-->
+  <script src="{% static 'lib/common-scripts.js'%}"></script>
+  <!--script for this page-->
+  <script type="text/javascript">
+    /* Formating function for row details */
+    function fnFormatDetails(oTable, nTr) {
+      var aData = oTable.fnGetData(nTr);
+      var sOut = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+      /*sOut += '<tr><td>Rendering engine:</td><td>' + aData[1] + ' ' + aData[4] + '</td></tr>';
+      sOut += '<tr><td>Link to source:</td><td>Could provide a link here</td></tr>';*/
+      sOut += '<tr><td>Comment:</td><td>A shit shop!!</td></tr>';
+      sOut += '</table>';
+
+      return sOut;
+    }
+
+    $(document).ready(function() {
+      /*
+       * Insert a 'details' column to the table
+       */
+      var nCloneTh = document.createElement('th');
+      var nCloneTd = document.createElement('td');
+      nCloneTd.innerHTML = '<img src="lib/advanced-datatable/images/details_open.png">';
+      nCloneTd.className = "center";
+
+      $('#hidden-table-info thead tr').each(function() {
+        this.insertBefore(nCloneTh, this.childNodes[0]);
+      });
+
+      $('#hidden-table-info tbody tr').each(function() {
+        this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
+      });
+
+      /*
+       * Initialse DataTables, with no sorting on the 'details' column
+       */
+      var oTable = $('#hidden-table-info').dataTable({
+        "aoColumnDefs": [{
+          "bSortable": false,
+          "aTargets": [0]
+        }],
+        "aaSorting": [
+          [1, 'asc']
+        ]
+      });
+
+      /* Add event listener for opening and closing details
+       * Note that the indicator for showing which row is open is not controlled by DataTables,
+       * rather it is done here
+       */
+      $('#hidden-table-info tbody td img').live('click', function() {
+        var nTr = $(this).parents('tr')[0];
+        if (oTable.fnIsOpen(nTr)) {
+          /* This row is already open - close it */
+          this.src = "lib/advanced-datatable/media/images/details_open.png";
+          oTable.fnClose(nTr);
+        } else {
+          /* Open this row */
+          this.src = "lib/advanced-datatable/images/details_close.png";
+          oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

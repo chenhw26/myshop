@@ -36,7 +36,7 @@ def shops(request):
 	if request.method == 'POST' and request.POST['sort'] == 'turnover':
 		rtx['shops'].sort(key=lambda t: t[6], reverse=(request.POST['sortType'] == '-'))
 	
-	return render(request, 'shop/shops.html', rtx)
+	return render(request, 'Dashio/shops.html', rtx)
 
 @transaction.atomic
 def details(request, shop_id):
@@ -57,7 +57,7 @@ def details(request, shop_id):
 
 	rtx['curSeller'] = (not rtx['isUser'] and request.session['id'] == rtx['shop'].seller.seller_id)
 
-	return render(request, 'shop/shopDetail.html', rtx)
+	return render(request, 'Dashio/shopDetail.html', rtx)
 
 @transaction.atomic
 def sellRecord(request, shop_id):
@@ -98,7 +98,7 @@ def sellRecord(request, shop_id):
 
 	rtx['records'] = records
 
-	return render(request, 'shop/shopSellRecord.html', rtx)
+	return render(request, 'Dashio/shopSellRecord.html', rtx)
 
 @transaction.atomic
 def post(request, user_id, shop_id):
@@ -113,7 +113,7 @@ def post(request, user_id, shop_id):
 def manage(request, shop_id):
 	shop = get_object_or_404(Shop, pk=shop_id)
 	if request.session['type'] != 'seller' or request.session['id'] != shop.seller.seller_id:
-		return render(request, 'shop/error.html', {'error': '您不能管理不属于自己的店铺'})
+		return render(request, 'Dashio/error.html', {'error': '您不能管理不属于自己的店铺'})
 	
 	rtx = {}
 	rtx['shop'] = shop
@@ -129,7 +129,7 @@ def manage(request, shop_id):
 		if c.sell_set.filter(shop_id=shop).count() == 0:
 			rtx['unsell'].append((c.computer_id, c.brand.name))
 
-	return render(request, 'shop/shopManage.html', rtx)
+	return render(request, 'Dashio/shopManage.html', rtx)
 
 
 @transaction.atomic
@@ -141,7 +141,7 @@ def computerManage(request, shop_id, computer_id):
 	
 	rtx = {'computer': sell.computer_id, "shop_id": shop_id, "price": sell.price}
 
-	return render(request, 'shop/shopComputerManage.html', rtx)
+	return render(request, 'Dashio/shopComputerManage.html', rtx)
 
 @transaction.atomic
 def computerAdd(request, shop_id, computer_id):
@@ -149,12 +149,12 @@ def computerAdd(request, shop_id, computer_id):
 	rtx = {'computer': computer, 'shop_id': shop_id, 'error': ''}
 
 	if request.method == 'GET':
-		return render(request, 'shop/shopComputerAdd.html', rtx)
+		return render(request, 'Dashio/shopComputerAdd.html', rtx)
 	
 	elif request.method == 'POST':
 		if request.POST['newPrice'] == '':
 			rtx['error'] = '请设置价格!'
-			return render(request, 'shop/shopComputerAdd.html', rtx)
+			return render(request, 'Dashio/shopComputerAdd.html', rtx)
 		else:
 			Sell(computer_id=computer, shop_id=get_object_or_404(Shop, pk=shop_id), price=float(request.POST['newPrice'])).save()
 			return HttpResponseRedirect(reverse('shop:shopManage', args=(shop_id, )))

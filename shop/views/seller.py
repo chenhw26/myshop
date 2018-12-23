@@ -14,6 +14,7 @@ def sellerIndex(request, seller_id):
 
 	curSeller = Seller.objects.get(seller_id=seller_id)
 	rtx['seller'] = curSeller
+	rtx['user_type'] = '卖家'
 	rtx['sells'] = Buy.objects.filter(shop_id__seller=curSeller).order_by('-buy_time')[:5]
 	rtx['turnover'] = Buy.objects.filter(shop_id__seller=curSeller, buy_time__gte=now().date()-timedelta(30)).aggregate(Sum('price'))[r'price__sum']
 	if rtx['turnover'] is None:
@@ -26,28 +27,28 @@ def sellerIndex(request, seller_id):
                       group by shop_id, name, city, open_date''', [seller_id])
 		rtx['shops'] = cursor.fetchall()
 	
-	return render(request, 'shop/sellerProfile.html', rtx)
+	return render(request, 'Dashio/seller.html', rtx)
 
 @transaction.atomic
 def openShop(request, seller_id):
 	if not(request.session.get('id', '') == seller_id and request.session.get('type', '') == 'seller'):
-		return render(request, 'shop/error.html', {'error': '账号错误'})
+		return render(request, 'Dashio/error.html', {'error': '账号错误'})
 	
 	if request.method == 'GET':
-		return render(request, 'shop/openShop.html', {'seller_id': seller_id})
+		return render(request, 'Dashio/openShop.html', {'seller_id': seller_id})
 	
 	elif request.method == 'POST':
 		name, city, address = request.POST['name'], request.POST['city'], request.POST['address']
 		if name == '':
-			return render(request, 'shop/error.html', {'error': '请输入店铺名'})
+			return render(request, 'Dashio/error.html', {'error': '请输入店铺名'})
 		if address == '':
-			return render(request, 'shop/error.html', {'error': '请输入详细地址'})
+			return render(request, 'Dashio/error.html', {'error': '请输入详细地址'})
 		try:
 			Shop(name=name, city=city, address = address, seller=Seller.objects.get(pk=seller_id)).save()
 		except BaseException as e:
-			return render(request, 'shop/error.html', {'error': e.message})
+			return render(request, 'Dashio/error.html', {'error': e.message})
 		
-		return render(request, 'shop/notice.html', {'notice': '开店成功'})
+		return render(request, 'Dashio/notice.html', {'notice': '开店成功'})
 
 
 @transaction.atomic
@@ -92,4 +93,4 @@ def sellRecord(request, seller_id):
 
 	rtx['records'] = records
 
-	return render(request, 'shop/sellerRecord.html', rtx)
+	return render(request, 'Dashio/sellerRecord.html', rtx)

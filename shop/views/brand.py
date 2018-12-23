@@ -23,7 +23,7 @@ def brand(request, name):
 	if rtx['net'][:4] != 'http':
 		rtx['net'] = 'http://' + rtx['net']
 
-	return render(request, 'shop/brand.html', rtx)
+	return render(request, 'Dashio/brand.html', rtx)
 
 def makeLike(request, name, user_id):
   try:
@@ -46,4 +46,4 @@ def allBrands(request):
 		sortKey = {'name': 0, 'country': 1, 'found_date': 2, 'computerNumber': 3, 'turnover': 4}
 		rtx['brands'].sort(key=lambda x: x[sortKey[request.POST['sort']]], reverse=(request.POST['sortType'] == '-'))
 	
-	return render(request, 'shop/allBrands.html', rtx)
+	return render(request, 'Dashio/allbrand.html', rtx)

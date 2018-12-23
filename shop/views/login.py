@@ -14,7 +14,7 @@ def md5Encode(s):
 def login(request):
 	rt = {'error_message': ''}
 	if request.method == 'GET':
-		return render(request, 'shop/login.html', rt)
+		return render(request, 'Dashio/login.html', rt)
 		
 	elif request.method == 'POST':
 		if request.POST['type'] == 'user':
@@ -23,16 +23,16 @@ def login(request):
 				psw = request.POST['psw']
 			except ValueError:
 				rt['error_message'] = '账号不存在'
-				return render(request, 'shop/login.html', rt)
+				return render(request, 'Dashio/login.html', rt)
 
 			q = User.objects.filter(user_id=user_id)
 			if not q.exists():
 				rt['error_message'] = '账号不存在'
-				return render(request, 'shop/login.html', rt)
+				return render(request, 'Dashio/login.html', rt)
 			
 			if md5Encode(str(psw)) != q[0].password:
 				rt['error_message'] = '密码错误'
-				return render(request, 'shop/login.html', rt)
+				return render(request, 'Dashio/login.html', rt)
 			
 			request.session['id'], request.session['type'] = user_id, 'user'
 			return HttpResponseRedirect(reverse('shop:userIndex', args=(user_id, )))
@@ -43,16 +43,16 @@ def login(request):
 				psw = request.POST['psw']
 			except ValueError:
 				rt['error_message'] = '账号不存在'
-				return render(request, 'shop/login.html', rt)
+				return render(request, 'Dashio/login.html', rt)
 
 			q = Seller.objects.filter(seller_id=seller_id)
 			if not q.exists():
 				rt['error_message'] = '账号不存在'
-				return render(request, 'shop/login.html', rt)
+				return render(request, 'Dashio/login.html', rt)
 			
 			if md5Encode(str(psw)) != q[0].password:
 				rt['error_message'] = '密码错误'
-				return render(request, 'shop/login.html', rt)
+				return render(request, 'Dashio/login.html', rt)
 
 			request.session['id'], request.session['type'] = seller_id, 'seller'
 			return HttpResponseRedirect(reverse('shop:sellerIndex', args=(seller_id, )))
@@ -61,7 +61,7 @@ def login(request):
 def register(request):
 	rt = {'error_message': ''}
 	if request.method == 'GET':
-		return render(request, 'shop/register.html', rt)
+		return render(request, 'Dashio/register.html', rt)
 	elif request.method == 'POST':
 		user_name = request.POST['user_name']
 		psw = request.POST['psw']
@@ -76,7 +76,7 @@ def register(request):
 		if psw != psw_confirm: rt['error_message'] = '两次输入密码不一致'
 
 		if rt['error_message']:
-			return render(request, 'shop/register.html', rt)
+			return render(request, 'Dashio/register.html', rt)
 		
 		if type_ == 'user':
 			new_user = User(name=user_name, password=md5Encode(str(psw)), sex=sex, address=address)

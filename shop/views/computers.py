@@ -34,7 +34,7 @@ def computers(request):
         computer = computer.exclude(disk_capacity__gte=int(request.POST['maxDisk']))
 
     except ValueError:
-      return render(request, 'shop:error.html', {'error': "请输入整数"})
+      return render(request, 'Dashio/error.html', {'error': "请输入整数"})
     
     if request.POST.get('brand', '') != '':
       print(request.POST['brand'])
@@ -45,7 +45,7 @@ def computers(request):
       computer = computer.order_by(sortKey)
 
   ctx['computer'] = computer
-  return render(request, "shop/computers.html", ctx)
+  return render(request, "Dashio/computers.html", ctx)
 
 @transaction.atomic
 def details(request, computer_id):
@@ -62,7 +62,7 @@ def details(request, computer_id):
   if rtx['isUser']:
     rtx['mark'] = ('收藏' if mark.objects.filter(user_id__user_id=rtx['user_id'], computer_id=rtx['computer']).count() == 0 else '取消收藏')
 
-  return render(request, 'shop/computerDetail.html', rtx)
+  return render(request, 'Dashio/computer_detail.html', rtx)
 
 @transaction.atomic
 def post(request, user_id, computer_id):

@@ -12,8 +12,8 @@
     <form action="{% url 'shop:login' %}" method="post">
         {% csrf_token %}
         <ul>
-            <li>
-                {{error_message}}
+            <li style="text-align:center;font-family:arial;color:red;font-size:24px;">
+                 {{error}}
             </li>
             <li>
                 <div class="text">
@@ -33,16 +33,11 @@
                 <input type="checkbox">记住我
             </li>
             <li>
-                <input type="submit" value="登陆">
+                <input type="submit" value="登录">
             </li>
-            <li><a href="{% url 'shop:register' %}">注册账号</a></li>
+            <li style="text-align:center;font-family:arial;color:blue;font-size:24px;"><a href="{% url 'shop:register' %}">注册账号</a></li>
         </ul>
     </form>
-    <div class="footer">
-        <p>iyaq Personal Blog  <a href="">Copyright ©2012 Wang Yuyan</a></p>
-        <p><a href="">iiyaq Home</a> | <a href="">Bolg
-        </a> | <a href="">Work</a> | <a href="">Terms of Use</a> | <a href="">Contact Me</a></p>
-    </div>
 </div>
 </body>
 </html>

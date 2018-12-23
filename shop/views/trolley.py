@@ -10,7 +10,7 @@ def trolley(request, user_id):
 	
 	trolley = shopping_cart.objects.filter(user_id__user_id=user_id)
 	if not trolley.exists():
-		return render(request, "shop/notice.html", {'notice': "你的购物车空空如也"})
+		return render(request, "Dashio/notice.html", {'notice': "你的购物车空空如也"})
 		
 	coupon = Coupon.objects.filter(owner__user_id=user_id, expired__gte=datetime.datetime.now())
 
@@ -24,7 +24,7 @@ def trolley(request, user_id):
 	rt['total'] -= rt['couponTotal']
 	if rt['total'] < 0: rt['total'] = 0.0
 	
-	return render(request, 'shop/trolley.html', rt)
+	return render(request, 'Dashio/trolley.html', rt)
 
 @transaction.atomic
 def buy(request, user_id):
@@ -42,7 +42,7 @@ def buy(request, user_id):
 	if total < 0: total = 0.0
 
 	if total > curUser.balance:
-		return render(request, 'shop/error.html', {'error': '您的余额不足'})
+		return render(request, 'Dashio/error.html', {'error': '您的余额不足'})
 	
 	for c in trolley:
 		Buy(computer_id=c.sell.computer_id, shop_id=c.sell.shop_id, user_id=c.user_id, price=c.sell.price).save()
@@ -54,14 +54,14 @@ def buy(request, user_id):
 	coupon.delete()
 	curUser.balance -= total
 	curUser.save()
-	return render(request, 'shop/notice.html', {'notice': '购买成功，谢谢惠顾!'})
+	return render(request, 'Dashio/notice.html', {'notice': '购买成功，谢谢惠顾!'})
 
 @transaction.atomic
 def add(request, sell_id, user_id):
 	curUser = User.objects.get(user_id=user_id)
 	sell = get_object_or_404(Sell, pk=sell_id)
 	shopping_cart(sell=sell, user_id=curUser).save()
-	return render(request, 'shop/addTrolley.html', {'user_id': user_id, 'computer_id': sell.computer_id.computer_id})
+	return render(request, 'Dashio/addTrolley.html', {'user_id': user_id, 'computer_id': sell.computer_id.computer_id})
 
 @transaction.atomic
 def delete(request, trolley_id):

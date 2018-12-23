@@ -85,6 +85,7 @@ class Buy(models.Model):
 class mark(models.Model):
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 	computer_id = models.ForeignKey(Computer, on_delete=models.CASCADE)
+	date = models.DateField(auto_now=False, auto_now_add=True, blank=True, null=True)
 	class Meta:
 		unique_together = ('user_id', 'computer_id')
 

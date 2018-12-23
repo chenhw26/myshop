@@ -94,9 +94,11 @@
     <!--main content start-->
     <section id="main-content">
       <section class="wrapper">
-        <h2><i class="fa fa-angle-right"></i>{{computer.computer_id}}</h2>
+<h2> {{computer.computer_id}} </h2>
+<h4> 上架该电脑 </h4>
 		<p>cpu:&nbsp {{computer.cpu}}</p>
-		<p>显卡:&nbsp {{computer.graphics_card}}</p>
+		<p>显卡:&nbsp {{computer.graphics}}</p>
+		<p>内存:&nbsp {{computer.memory}}GB</p>
 		<p>内存:&nbsp {{computer.memory}}GB</p>
 		<p>SSD:&nbsp {{computer.ssd_capacity}}
 			{% if computer.ssd_capacity %}
@@ -109,111 +111,18 @@
 			{% endif %}
 		</p>
 		<p>屏幕尺寸:&nbsp {{computer.screen_size}}寸</p>
-		<p>品牌:&nbsp <a href="{% url 'shop:brand' computer.brand.name %}">{{computer.brand.name}}</a></p>
+		<p>品牌:&nbsp<a href="{% url 'shop:brand' computer.brand.name %}">{{computer.brand.name}}</a></p>
 		<p>原产地:&nbsp {{computer.brand.country}}</p>
-<p>总销量: {{sellAmount}} </p>
-<p>收藏人数: {{markAmount}} </p>
-{% if isUser %}
-<a href="{% url 'shop:mark' computer.computer_id user_id %}"><button type="button" class="btn btn-success btn-xs">{{mark}}</button></a>
-{% endif %}
-<br><br>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="content-panel">
-              <h4><i class="fa fa-angle-right"></i> 在售店铺</h4>
-              <hr>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th><i class="fa fa-shopping-cart"></i>店铺名</th>
-                    <th><i class=" fa fa-clock-o"></i>上架日期</th>
-                    <th><i class="fa fa-truck"></i>发货地</th>
-                    <th><i class="fa fa-money"></i>售价(元)</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for s in sell %}
-    <tr>
-        <td><a href="{% url 'shop:shopDetail'  s.shop_id.shop_id %}">{{s.shop_id.name}}</a></td>
-        <td>{{s.onsell_date}}</td>
-        <td>{{s.shop_id.city}}</td>
-        <td>{{s.price}}</td>
-				{% if isUser %}
-					<td><a href="{% url 'shop:trolley_add' s.id user_id %}"><button type="button" class="btn btn-success btn-xs">加入购物车</button></a></td>
-				{% endif %}
-		</tr>
-    {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- /col-md-12 -->
-          <div class="col-md-12 mt">
-            <div class="content-panel">
-                <h4><i class="fa fa-angle-right"></i> 最近交易 </h4>
-              <table class="table table-hover">
-                <hr>
-                <thead>
-                  <tr>
-                    <th><i class="fa fa-user">买家</th>
-                    <th><i class="fa fa-shopping-cart"></i>店铺名</th>
-                    <th><i class="fa fa-clock-o"></i>日期</th>
-                    <th><i class="fa fa-money"></i>成交价</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for b in buys %}
-    <tr>
-        <td><a href="{% url 'shop:userIndex'  b.user_id.user_id %}">{{b.user_id.name}}</a></td>
-				<td><a href="{% url 'shop:shopDetail' b.shop_id.shop_id %}">{{b.shop_id.name}}</a></td>
-				<td>{{b.buy_time}}</td>
-				<td>{{b.price}}元</td>
-    </tr>
-    {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- /col-md-12 -->
-          <div class="col-md-12 mt">
-            <div class="content-panel">
-                <h4><i class="fa fa-angle-right"></i> 评论 </h4>
-              <table class="table table-hover">
-                <hr>
-                <thead>
-                  <tr>
-                    <th><i class="fa fa-user"></i>用户</th>
-                    <th><i class="fa fa-clock-o"></i>日期</th>
-                    <th>内容</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {% for c in comments %}
-    <tr>
-        <td><a href="{% url 'shop:userIndex' c.user_id.user_id %}">{{c.user_id.name}}</a></td>
-				<td>{{c.comment_date}}</td>
-				<td>{{c.content}}</td>
-    </tr>
-    {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <!-- /col-md-12 -->
-        </div>
-        <!-- /row -->
-        <br>
-        {% if isUser %}
-        <h4>发表你的评论</h4>
-        <form action="{% url 'shop:postComputerComment' user_id computer.computer_id %}" method="post">
+<br>{{error}}<br>
+<form action="{% url 'shop:shopComputerAdd' shop_id computer.computer_id %}" method="post">
 	{% csrf_token %}
-        <textarea name="comment" cols="50" rows="10" wrap="" id="ta"></textarea><br>
-        <input  class="btn btn-success btn-sm" type="submit" name="sub" value="submit">
-        <input  class="btn btn-danger btn-sm" type="reset" name="res" value="clear">
-        </form>
-        {% endif %}
-        <!-- /row -->
+	售价: <input type="number" name="newPrice">
+	&nbsp &nbsp
+	<br><br>
+	<input class="btn btn-success btn-sm" type="submit" value="确认上架">
+</form>
+<br><br>
+<a href="{% url 'shop:shopManage' shop_id %}"><button type="button" class="btn btn-success">返回</button></a>
       </section>
       <!-- /wrapper -->
     </section>

@@ -100,119 +100,69 @@
     <!--main content start-->
     <section id="main-content">
       <section class="wrapper">
-        <h3><i class="fa fa-angle-right"></i> {{user_name}}(id:{{user_id}}, user_type:{{user_type}})</h3>
-        <p>账户余额:{{balance}}&nbsp&nbsp<a href="{% url 'shop:recharge' user_id %}"> <button type="button" class="btn btn-primary btn-xs">账户充值</button> </a>
-</p>
+        <h3><i class="fa fa-angle-right"></i> {{seller.name}}(id:{{seller.seller_id}}, user_type:{{user_type}})</h3>
+        <p>上月总营业额{{turnover}}元</p>
         <div class="row">
           <div class="col-md-12">
             <div class="content-panel">
-              <h4><i class="fa fa-angle-right"></i> 购买记录&nbsp&nbsp</h4>
+              <h4><i class="fa fa-angle-right"></i> 名下店铺&nbsp&nbsp</h4>
               <hr>
               <table class="table">
                 <thead>
                   <tr>
-                    <th><i class="fa fa-desktop"></i>型号</th>
-                    <th><i class=" fa fa-shopping-cart">店铺</th>
-                    <th><i class="fa fa-money"></i>价格</th>
-                    <th><i class="fa fa-clock-o"></i>日期</th>
+                    <th><i class="fa fa-shopping-cart"></i>店铺名</th>
+                    <th><i class=" fa fa-truck"></i>发货地</th>
+                    <th><i class="fa fa-clock-o"></i>开张日期</th>
+                    <th><i class="fa fa-money"></i>营业额</th>
                   </tr>
                 </thead>
                 <tbody>
-                {% for record in buy %}
-                  <tr>
-                    <td><a href="{% url 'shop:computerDetail' record.computer_id.computer_id %}">{{record.computer_id.computer_id}} </a></td>
-                    <td><a href="{% url 'shop:shopDetail' record.shop_id.shop_id %}">{{record.shop_id.name}} </a></td>
-                    <td>{{record.price}}元</td>
-                    <td>{{record.buy_time}}</td>
-                  </tr>
-                {% endfor %}
+                  {% for id, name, city, date, turnover in shops %}
+                    <tr>
+                    <td><a href="{% url 'shop:shopDetail' id %}">{{name}}</a></td>
+                    <td>{{city}}</td>
+                    <td>{{date}}</td>
+                    <td>{% if turnover %} {{turnover}}元
+                        {% else %} 0.0元
+                        {% endif %} </td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
               </table>
             </div>
-             <br>
-             <a href="{% url 'shop:buyRecord' user_id %}"><button type="button" class="btn btn-success">查看更多</button></a>
+
+            {% if curSeller %}<br><a href="{% url 'shop:openShop' seller.seller_id %}"><button type="button" class="btn btn-warning">开店</button></a>{% endif %}
           </div>
           <!-- /col-md-12 -->
           <div class="col-md-12 mt">
             <div class="content-panel">
+                <h4><i class="fa fa-angle-right"></i> 最近交易&nbsp&nbsp<a href="{% url 'shop:sellerRecord' seller.seller_id %}"> 查看所有交易记录 </a></h4>
               <table class="table table-hover">
-                <h4><i class="fa fa-angle-right"></i> 当前购物车&nbsp&nbsp</h4>
                 <hr>
                 <thead>
                   <tr>
-                    <th><i class="fa fa-desktop">型号</th>
                     <th><i class="fa fa-shopping-cart">店铺</th>
+                    <th><i class="fa fa-desktop"></i>型号</th>
+                    <th><i class="fa fa-user"></i>买家</th>
+                    <th><i class="fa fa-clock-o"></i>日期</th>
                     <th><i class="fa fa-money"></i>价格</th>
                   </tr>
                 </thead>
                 <tbody>
-                {% for record in trolley %}
+                {% for s in sells %}
                   <tr>
-                    <td><a href="{% url 'shop:computerDetail' record.sell.computer_id.computer_id %}">{{record.sell.computer_id.computer_id}} </a></td>
-                    <td><a href="{% url 'shop:shopDetail' record.sell.shop_id.shop_id %}">{{record.sell.shop_id.name}} </a></td>
-                    <td>{{record.sell.price}}</td>
-                  </tr>
-                {% endfor %}
-                </tbody>
-              </table>
-            </div>
-               {% if curUser %}<br><a href="{% url 'shop:trolley' user_id %}"> <button type="button" class="btn btn-primary">去结算</button> </a>{% endif %} 
-          </div>
-          <!-- /col-md-12 -->
-          <div class="col-md-12 mt">
-            <div class="content-panel">
-              <table class="table table-hover">
-                <h4><i class="fa fa-angle-right"></i> 代金券&nbsp&nbsp</h4>
-                <hr>
-                <thead>
-                  <tr>
-                    <th><i class=" fa fa-money">面值</th>
-                    <th><i class="fa fa-clock-o"></i>过期日期</th>
-                    {% if curUser %}<th> 操作 </th>{% endif %}
-                  </tr>
-                </thead>
-                <tbody>
-                {% for record in coupon %}
-                  <tr>
-                    <td>{{record.value}}元</td>
-                    <td>{{record.expired}}</td>
-                    {% if curUser %}<td> <a href="{% url 'shop:deleteCoupon' record.coupon_id %}"><button type="button" class="btn btn-danger btn-xs">删除</button></a> </td>{% endif %}
+                  <td><a href="{% url 'shop:shopDetail' s.shop_id.shop_id %}">{{s.shop_id.name}}</a></td>
+                  <td><a href="{% url 'shop:computerDetail'           s.computer_id.computer_id %}">{{s.computer_id.computer_id}}         </a></td>
+		              <td><a href="{% url 'shop:userIndex' s.user_id.user_id %}">{{s.user_id.name}}</a></td>
+		              <td>{{s.buy_time}}</td>
+		              <td>{{s.price}}元</td>
                   </tr>
                 {% endfor %}
                 </tbody>
               </table>
             </div>
             <br>
-            {% if curUser %}
-            <a href="{% url 'shop:getCoupon' user_id %}"> <button type="button" class="btn btn-primary">领取代金券</button> </a>
-            {% endif %}
-          </div>
-          <!-- /col-md-12 -->
-        </div>
-        <!-- row -->
-        <div class="row mt">
-          <div class="col-md-12">
-            <div class="content-panel">
-              <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i> 收藏夹</h4>
-                <hr>
-                <thead>
-                  <tr>
-                    <th><i class="fa fa-desktop"></i>型号</th>
-                    <th><i class="fa fa-clock-o"></i>收藏日期</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    {% for record in mark %}
-                    <td><a href="{% url 'shop:computerDetail' record.computer_id.computer_id %}">{{record.computer_id.computer_id}} </a></td>
-                    <td>{{record.date}}</td>
-                  </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
-            </div>
-            <!-- /content-panel -->
+            <a href="{% url 'shop:sellerRecord' seller.seller_id %}"> <button type="button" class="btn btn-warning">查看所有交易记录</button> </a>
           </div>
           <!-- /col-md-12 -->
         </div>

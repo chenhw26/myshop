@@ -23,50 +23,51 @@ def userIndex(request, user_id):
 	rt['user_id'] = curUser.user_id
 	rt['user_name'] = curUser.name
 	rt['balance'] = curUser.balance
+	rt['user_type'] = '买家'
 
 	rt['coupon'] = Coupon.objects.filter(owner__user_id=user_id)
 	rt['buy'] = Buy.objects.filter(user_id__user_id=user_id).order_by('-buy_time')[:5]
 	rt['mark'] = mark.objects.filter(user_id__user_id=user_id)
 	rt['trolley'] = shopping_cart.objects.filter(user_id__user_id=user_id)
 
-	return render(request, 'shop/userProfile.html', rt)
+	return render(request, 'Dashio/customer.html', rt)
 
 @transaction.atomic
 def recharge(request, user_id):
 	if not (request.session.get('id', None) == user_id and request.session.get('type', None) == 'user'):
-		return render(request, 'shop/error.html', {'error': '你不能为他人充值'})
+		return render(request, 'Dashio/error.html', {'error': '你不能为他人充值'})
 	
 	if request.method == 'GET':
-		return render(request, 'shop/recharge.html', {'user_id': user_id})
+		return render(request, 'Dashio/recharge.html', {'user_id': user_id})
 	elif request.method == 'POST':
 		if request.POST['value'] == '':
-			return render(request, 'shop/error.html', {'error': '请输入一个数值'})
+			return render(request, 'Dashio/error.html', {'error': '请输入一个数值'})
 		
 		value = int(request.POST['value'])
 		curUser = User.objects.get(user_id=user_id)
 		curUser.balance += value
 		curUser.save()
 
-		return render(request, 'shop/notice.html', {'notice': '您已成功充值'+str(value)+'元'})
+		return render(request, 'Dashio/notice.html', {'notice': '您已成功充值'+str(value)+'元'})
 
 @transaction.atomic
 def getCoupon(request, user_id):
 	if not (request.session.get('id', None) == user_id and request.session.get('type', None) == 'user'):
-		return render(request, 'shop/error.html', {'error': '你不能为他人领取代金券'})
+		return render(request, 'Dashio/error.html', {'error': '你不能为他人领取代金券'})
 	
 	if request.method == 'GET':
-		return render(request, 'shop/getCoupon.html', {'user_id': user_id})
+		return render(request, 'Dashio/getCoupon.html', {'user_id': user_id})
 	elif request.method == 'POST':
 		if request.POST.get('value', '') == '':
 			if request.POST['userDefinedValue'] == '':
-				return render(request, 'shop/error.html', {'error': '请输入一个数值'})
+				return render(request, 'Dashio/error.html', {'error': '请输入一个数值'})
 			else: value = int(request.POST['userDefinedValue'])
 		else: value = int(request.POST['value'])
 
 		curUser = User.objects.get(user_id=user_id)
 		Coupon(value=value, owner=curUser, expired= now().date()+timedelta(days=7)).save()
 
-		return render(request, 'shop/notice.html', {'notice': '您已成功领取'+str(value)+'元代金券'})
+		return render(request, 'Dashio/notice.html', {'notice': '您已成功领取'+str(value)+'元代金券'})
 
 @transaction.atomic
 def deleteCoupon(request, coupon_id):
@@ -112,4 +113,4 @@ def buyRecord(request, user_id):
 
 	rtx['records'] = records.order_by('-buy_time')
 
-	return render(request, 'shop/buyRecord.html', rtx)
+	return render(request, 'Dashio/buyRecord.html', rtx)

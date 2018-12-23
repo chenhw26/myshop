@@ -25,7 +25,7 @@ SECRET_KEY = 'pm_ow0ue0)@h1m(5wcm(p5s6a&_l1d20z6nlv-ktogf^04=bj$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['45.77.208.126',]
+ALLOWED_HOSTS = ['45.77.208.126', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -77,9 +77,8 @@ DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.mysql',
          'NAME': 'OnlineShop',
-         'USER': 'root',
+         'USER': 'django',
          'PASSWORD': 'Chw6951.',
-         'HOST': '127.0.0.1',
      },
 }
 
@@ -108,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Shanghai'
+TIME_ZONE = 'US/Pacific'
 
 USE_I18N = True
 

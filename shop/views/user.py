@@ -91,11 +91,11 @@ def buyRecord(request, user_id):
 		maxPrice = request.POST['maxPrice']
 		
 		if computer_id != '':
-			records = records.filter(computer_id__computer_id=computer_id)
+			records = records.filter(computer_id__computer_id__icontains=computer_id)
 		if brand != '':
-			records = records.filter(computer_id__brand__name=brand)
+			records = records.filter(computer_id__brand__name__icontains=brand)
 		if shop != '':
-			records = records.filter(shop_id__name=shop)
+			records = records.filter(shop_id__name__icontains=shop)
 		if minDate != '':
 			y, m, d = minDate.split('-')
 			records = records.filter(buy_time__gte=datetime.date(int(y), int(m), int(d)))

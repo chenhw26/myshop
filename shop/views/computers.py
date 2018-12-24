@@ -11,11 +11,11 @@ def computers(request):
 
   if request.method == 'POST':
     if request.POST['computer_id'] != '':
-      computer = computer.filter(computer_id=request.POST['computer_id'])
+      computer = computer.filter(computer_id__icontains=request.POST['computer_id'])
     if request.POST['cpu'] != '':
-      computer = computer.filter(cpu=request.POST['cpu'])
+      computer = computer.filter(cpu__icontains=request.POST['cpu'])
     if request.POST['graphics_card'] != '':
-      computer = computer.filter(graphics_card=request.POST['graphics_card'])
+      computer = computer.filter(graphics_card__icontains=request.POST['graphics_card'])
     
     try:
       if request.POST['minMemory'] != '':
@@ -38,7 +38,7 @@ def computers(request):
     
     if request.POST.get('brand', '') != '':
       print(request.POST['brand'])
-      computer = computer.filter(brand__name=request.POST['brand'])
+      computer = computer.filter(brand__name__icontains=request.POST['brand'])
 
     if request.POST['sort'] != '':
       sortKey = request.POST['sortType'] + request.POST['sort']

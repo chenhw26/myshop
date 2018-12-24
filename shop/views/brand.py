@@ -41,8 +41,8 @@ def allBrands(request):
 	rtx = {'brands': []}
 	for b in brands:
 		rtx['brands'].append((b.name, b.country, b.found_date, Computer.objects.filter(brand=b).count(), Buy.objects.filter(computer_id__brand=b).aggregate(Sum('price'))[r'price__sum']))
-		if rtx['brand'][-1][4] is None:
-			rtx['brand'][-1][4] = 0.0
+		if rtx['brands'][-1][4] is None:
+			rtx['brands'][-1][4] = 0.0
 	
 	if request.method == 'POST':
 		sortKey = {'name': 0, 'country': 1, 'found_date': 2, 'computerNumber': 3, 'turnover': 4}

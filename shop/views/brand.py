@@ -40,7 +40,7 @@ def allBrands(request):
 	brands = Brand.objects.all()
 	rtx = {'brands': []}
 	for b in brands:
-		rtx['brands'].append((b.name, b.country, b.found_date, Computer.objects.filter(brand=b).count(), Buy.objects.filter(computer_id__brand=b).aggregate(Sum('price'))[r'price__sum']))
+		rtx['brands'].append([b.name, b.country, b.found_date, Computer.objects.filter(brand=b).count(), Buy.objects.filter(computer_id__brand=b).aggregate(Sum('price'))[r'price__sum']])
 		if rtx['brands'][-1][4] is None:
 			rtx['brands'][-1][4] = 0.0
 	

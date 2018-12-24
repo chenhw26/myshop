@@ -12,11 +12,11 @@ def shops(request):
 	if request.method == 'POST':
 		name, city, minDate, maxDate, seller = request.POST['name'], request.POST['city'], request.POST['minDate'], request.POST['maxDate'], request.POST['seller']
 		if name != '':
-			shops = shops.filter(name=name)
+			shops = shops.filter(name__icontains=name)
 		if city != '':
-			shops = shops.filter(city=city)
+			shops = shops.filter(city__icontains=city)
 		if seller != '':
-			shops = shops.filter(seller__name=seller)
+			shops = shops.filter(seller__name__icontains=seller)
 		if minDate != '':
 			y, m, d = minDate.split('-')
 			shops = shops.filter(open_date__gte=datetime.date(int(y), int(m), int(d)))
@@ -76,11 +76,11 @@ def sellRecord(request, shop_id):
 		maxPrice = request.POST['maxPrice']
 		
 		if computer_id != '':
-			records = records.filter(computer_id__computer_id=computer_id)
+			records = records.filter(computer_id__computer_id__icontains=computer_id)
 		if brand != '':
-			records = records.filter(computer_id__brand__name=brand)
+			records = records.filter(computer_id__brand__name__icontains=brand)
 		if user != '':
-			records = records.filter(user_id__name=user)
+			records = records.filter(user_id__name__icontains=user)
 		if minDate != '':
 			y, m, d = minDate.split('-')
 			records = records.filter(buy_time__gte=datetime.date(int(y), int(m), int(d)))

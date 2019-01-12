@@ -10,11 +10,11 @@ class Brand(models.Model):
 
 class Computer(models.Model):
 	# 笔记本型号
-	computer_id = models.CharField(max_length=30, primary_key=True)
+	computer_id = models.CharField(max_length=50, primary_key=True)
 	# cpu型号
-	cpu = models.CharField(max_length=15)
+	cpu = models.CharField(max_length=40)
 	# 显卡型号
-	graphics_card = models.CharField(max_length=15, blank=True, null=True)
+	graphics_card = models.CharField(max_length=40, blank=True, null=True)
 	# 以GB为单位
 	memory = models.IntegerField(validators=[MaxValueValidator(128), MinValueValidator(0)])
 	ssd_capacity = models.IntegerField(validators=[MinValueValidator(0)], blank=True, null=True)

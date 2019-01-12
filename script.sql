@@ -1,13 +1,13 @@
 use OnlineShop;
-begin tran
+begin;
 	insert into shop_brand values('Lenovo', 'China', '1984-10-17', 'www.lenovo.com');
 	insert into shop_brand values('Apple', 'USA', '1976-4-1', 'www.apple.com');
 	insert into shop_brand values('Dell', 'USA', '1989-11-4', 'www.dell.com');
 	insert into shop_brand values('ASUS', 'Taiwan', '1989-4-2', 'www.asus.com');
 	insert into shop_brand values('VAIO', 'Japan', '2014-7-1', 'us.vaio.com');
-commit tran
+commit;
 
-begin tran
+begin;
 	insert into shop_computer values('ThinkPad L380', 'i5-8250U', 'Intel® UHD Graphics 620', 32, 512, 1024, '13.3', 'Lenovo');
 	insert into shop_computer values('昭阳 K42', 'i5-7200U', 'nVIDIA G940MX', 8, 256, 512, '14.0', 'Lenovo');
 	insert into shop_computer values('扬天 V530s', 'i7-8700U', 'Nvidia GeForce MX150', 8, 128, null, '14.0', 'Lenovo');
@@ -30,4 +30,4 @@ begin tran
 	insert into shop_computer values('VJS112C0811P', 'i5-8250', 'Intel UHD Graphics 620', 16, 1024, 1000, '11.6', 'VAIO');
 	insert into shop_computer values('VJS131C11T', 'i7-8550U', 'Intel UHD Graphics 620', 16, 1024, 1000, '13.3', 'VAIO');
 	insert into shop_computer values('VJZ131A11T', 'i7-6567U', 'Intel HD Graphics 550', 16, 512, 1000, '13.3', 'VAIO');
-commit tran 
+commit; 
